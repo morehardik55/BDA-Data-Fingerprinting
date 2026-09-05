@@ -1,0 +1,2363 @@
+[
+    {
+        "month": "2009-12",
+        "total_records": 45228,
+        "total_columns": 8,
+        "missing_percentage": 3.7853,
+        "total_missing": 13696,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 228,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 13468,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.5041,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 29.778,
+            "Country": 0.0
+        },
+        "duplicate_records": 506,
+        "duplicate_percentage": 1.1188,
+        "growth_rate": 0.0,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 45228,
+                "mean": 9.288228530998497,
+                "stddev": 60.303768273382296,
+                "min": -1395.0,
+                "max": 5184.0
+            },
+            "UnitPrice": {
+                "count": 45228,
+                "mean": 4.384623684443776,
+                "stddev": 21.65436946584249,
+                "min": 0.0,
+                "max": 1998.49
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 29.78%",
+            "High numerical outlier percentage in Quantity: 11.29%",
+            "High numerical outlier percentage in UnitPrice: 5.40%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 7.0,
+                "iqr": 6.0,
+                "lower_bound": -8.0,
+                "upper_bound": 16.0,
+                "outlier_count": 5107,
+                "outlier_percentage": 11.2917
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.95,
+                "iqr": 3.7,
+                "lower_bound": -4.300000000000001,
+                "upper_bound": 10.5,
+                "outlier_count": 2443,
+                "outlier_percentage": 5.4015
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": true,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-01",
+        "total_records": 31555,
+        "total_columns": 8,
+        "missing_percentage": 3.6991,
+        "total_missing": 9338,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 222,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 9116,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.7035,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 28.8892,
+            "Country": 0.0
+        },
+        "duplicate_records": 321,
+        "duplicate_percentage": 1.0173,
+        "growth_rate": -30.2313,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 31555,
+                "mean": 11.895515766122642,
+                "stddev": 115.30384151128153,
+                "min": -3669.0,
+                "max": 9312.0
+            },
+            "UnitPrice": {
+                "count": 31555,
+                "mean": 5.250241229599369,
+                "stddev": 81.2628444092857,
+                "min": 0.0,
+                "max": 8985.6
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 28.89%",
+            "High numerical outlier percentage in Quantity: 10.92%",
+            "High numerical outlier percentage in UnitPrice: 7.12%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 8.0,
+                "iqr": 7.0,
+                "lower_bound": -9.5,
+                "upper_bound": 18.5,
+                "outlier_count": 3446,
+                "outlier_percentage": 10.9206
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.21,
+                "iqr": 2.96,
+                "lower_bound": -3.1899999999999995,
+                "upper_bound": 8.649999999999999,
+                "outlier_count": 2248,
+                "outlier_percentage": 7.1241
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-02",
+        "total_records": 29388,
+        "total_columns": 8,
+        "missing_percentage": 2.5487,
+        "total_missing": 5992,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 510,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 5482,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 1.7354,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 18.6539,
+            "Country": 0.0
+        },
+        "duplicate_records": 330,
+        "duplicate_percentage": 1.1229,
+        "growth_rate": -6.8674,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 29388,
+                "mean": 12.535796923914523,
+                "stddev": 159.42230834288526,
+                "min": -4200.0,
+                "max": 19152.0
+            },
+            "UnitPrice": {
+                "count": 29388,
+                "mean": 3.973544848237222,
+                "stddev": 21.192684679244937,
+                "min": 0.0,
+                "max": 1508.65
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 11.21%",
+            "High numerical outlier percentage in UnitPrice: 6.00%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 3293,
+                "outlier_percentage": 11.2053
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.21,
+                "iqr": 2.96,
+                "lower_bound": -3.1899999999999995,
+                "upper_bound": 8.649999999999999,
+                "outlier_count": 1762,
+                "outlier_percentage": 5.9956
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-03",
+        "total_records": 41511,
+        "total_columns": 8,
+        "missing_percentage": 2.6044,
+        "total_missing": 8649,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 252,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 8397,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.6071,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 20.2284,
+            "Country": 0.0
+        },
+        "duplicate_records": 526,
+        "duplicate_percentage": 1.2671,
+        "growth_rate": 41.2515,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 41511,
+                "mean": 11.788923417889235,
+                "stddev": 173.87218385262793,
+                "min": -5200.0,
+                "max": 12960.0
+            },
+            "UnitPrice": {
+                "count": 41511,
+                "mean": 6.463449230325444,
+                "stddev": 136.56367181076925,
+                "min": 0.0,
+                "max": 10953.5
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 20.23%",
+            "High numerical outlier percentage in Quantity: 10.70%",
+            "High numerical outlier percentage in UnitPrice: 7.13%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 4442,
+                "outlier_percentage": 10.7008
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.21,
+                "iqr": 2.96,
+                "lower_bound": -3.1899999999999995,
+                "upper_bound": 8.649999999999999,
+                "outlier_count": 2958,
+                "outlier_percentage": 7.1258
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-04",
+        "total_records": 34057,
+        "total_columns": 8,
+        "missing_percentage": 2.3248,
+        "total_missing": 6334,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 110,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 6224,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.323,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 18.2752,
+            "Country": 0.0
+        },
+        "duplicate_records": 410,
+        "duplicate_percentage": 1.2039,
+        "growth_rate": -17.9567,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 34057,
+                "mean": 10.33476231024459,
+                "stddev": 85.79311515857393,
+                "min": -9200.0,
+                "max": 4800.0
+            },
+            "UnitPrice": {
+                "count": 34057,
+                "mean": 3.5443043133575114,
+                "stddev": 300.0974215598924,
+                "min": -53594.36,
+                "max": 5876.34
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 6.18%",
+            "High numerical outlier percentage in UnitPrice: 7.26%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 2105,
+                "outlier_percentage": 6.1808
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.21,
+                "iqr": 2.96,
+                "lower_bound": -3.1899999999999995,
+                "upper_bound": 8.649999999999999,
+                "outlier_count": 2472,
+                "outlier_percentage": 7.2584
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-05",
+        "total_records": 35323,
+        "total_columns": 8,
+        "missing_percentage": 2.1923,
+        "total_missing": 6195,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 476,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 5719,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 1.3476,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 16.1906,
+            "Country": 0.0
+        },
+        "duplicate_records": 415,
+        "duplicate_percentage": 1.1749,
+        "growth_rate": 3.7173,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 35323,
+                "mean": 10.30758995555304,
+                "stddev": 102.7061937202504,
+                "min": -9000.0,
+                "max": 10200.0
+            },
+            "UnitPrice": {
+                "count": 35323,
+                "mean": 4.045113099113918,
+                "stddev": 22.471517686633508,
+                "min": 0.0,
+                "max": 2396.61
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 12.15%",
+            "High numerical outlier percentage in UnitPrice: 7.01%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 4292,
+                "outlier_percentage": 12.1507
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.25,
+                "iqr": 3.0,
+                "lower_bound": -3.25,
+                "upper_bound": 8.75,
+                "outlier_count": 2475,
+                "outlier_percentage": 7.0068
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-06",
+        "total_records": 39983,
+        "total_columns": 8,
+        "missing_percentage": 2.5661,
+        "total_missing": 8208,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 175,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 8033,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.4377,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 20.091,
+            "Country": 0.0
+        },
+        "duplicate_records": 514,
+        "duplicate_percentage": 1.2855,
+        "growth_rate": 13.1925,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 39983,
+                "mean": 9.710451942075382,
+                "stddev": 45.872519575196954,
+                "min": -1158.0,
+                "max": 3500.0
+            },
+            "UnitPrice": {
+                "count": 39983,
+                "mean": 5.874238801491432,
+                "stddev": 183.2324885721855,
+                "min": 0.0,
+                "max": 25111.09
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 20.09%",
+            "High numerical outlier percentage in Quantity: 10.58%",
+            "High numerical outlier percentage in UnitPrice: 7.43%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 4229,
+                "outlier_percentage": 10.577
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.21,
+                "iqr": 2.96,
+                "lower_bound": -3.1899999999999995,
+                "upper_bound": 8.649999999999999,
+                "outlier_count": 2970,
+                "outlier_percentage": 7.4282
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-07",
+        "total_records": 33383,
+        "total_columns": 8,
+        "missing_percentage": 2.1426,
+        "total_missing": 5722,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 85,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 5637,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.2546,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 16.8858,
+            "Country": 0.0
+        },
+        "duplicate_records": 391,
+        "duplicate_percentage": 1.1713,
+        "growth_rate": -16.507,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 33383,
+                "mean": 9.052541712847857,
+                "stddev": 90.48182752371623,
+                "min": -7100.0,
+                "max": 2560.0
+            },
+            "UnitPrice": {
+                "count": 33383,
+                "mean": 3.0150345984479623,
+                "stddev": 244.0231522376414,
+                "min": -44031.79,
+                "max": 3610.5
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 5.89%",
+            "High numerical outlier percentage in UnitPrice: 7.32%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 1966,
+                "outlier_percentage": 5.8892
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.21,
+                "iqr": 2.96,
+                "lower_bound": -3.1899999999999995,
+                "upper_bound": 8.649999999999999,
+                "outlier_count": 2445,
+                "outlier_percentage": 7.3241
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-08",
+        "total_records": 33306,
+        "total_columns": 8,
+        "missing_percentage": 2.4481,
+        "total_missing": 6523,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 159,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 6364,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.4774,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 19.1077,
+            "Country": 0.0
+        },
+        "duplicate_records": 367,
+        "duplicate_percentage": 1.1019,
+        "growth_rate": -0.2307,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 33306,
+                "mean": 13.565213475049541,
+                "stddev": 170.03509981937606,
+                "min": -9600.0,
+                "max": 9600.0
+            },
+            "UnitPrice": {
+                "count": 33306,
+                "mean": 4.737227226325675,
+                "stddev": 107.79370134565085,
+                "min": 0.0,
+                "max": 18910.69
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 7.00%",
+            "High numerical outlier percentage in UnitPrice: 9.67%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 2330,
+                "outlier_percentage": 6.9957
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.75,
+                "iqr": 2.5,
+                "lower_bound": -2.5,
+                "upper_bound": 7.5,
+                "outlier_count": 3221,
+                "outlier_percentage": 9.6709
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-09",
+        "total_records": 42091,
+        "total_columns": 8,
+        "missing_percentage": 2.0313,
+        "total_missing": 6840,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 135,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 6705,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.3207,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 15.9298,
+            "Country": 0.0
+        },
+        "duplicate_records": 484,
+        "duplicate_percentage": 1.1499,
+        "growth_rate": 26.3766,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 42091,
+                "mean": 11.362571571119716,
+                "stddev": 138.65350135412515,
+                "min": -7128.0,
+                "max": 7128.0
+            },
+            "UnitPrice": {
+                "count": 42091,
+                "mean": 5.316177353829359,
+                "stddev": 110.03736998604114,
+                "min": 0.0,
+                "max": 10468.8
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 6.61%",
+            "High numerical outlier percentage in UnitPrice: 9.90%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 2781,
+                "outlier_percentage": 6.6071
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.75,
+                "iqr": 2.5,
+                "lower_bound": -2.5,
+                "upper_bound": 7.5,
+                "outlier_count": 4168,
+                "outlier_percentage": 9.9024
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-10",
+        "total_records": 59098,
+        "total_columns": 8,
+        "missing_percentage": 1.8389,
+        "total_missing": 8694,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 157,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 8537,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.2657,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 14.4455,
+            "Country": 0.0
+        },
+        "duplicate_records": 849,
+        "duplicate_percentage": 1.4366,
+        "growth_rate": 40.4053,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 59098,
+                "mean": 10.181884327726827,
+                "stddev": 48.26115773489066,
+                "min": -2000.0,
+                "max": 4752.0
+            },
+            "UnitPrice": {
+                "count": 59098,
+                "mean": 4.500547226642594,
+                "stddev": 182.53944422903513,
+                "min": -38925.87,
+                "max": 10468.8
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 5.46%",
+            "High numerical outlier percentage in UnitPrice: 10.11%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 3229,
+                "outlier_percentage": 5.4638
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.75,
+                "iqr": 2.5,
+                "lower_bound": -2.5,
+                "upper_bound": 7.5,
+                "outlier_count": 5972,
+                "outlier_percentage": 10.1052
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-11",
+        "total_records": 78015,
+        "total_columns": 8,
+        "missing_percentage": 2.6977,
+        "total_missing": 16837,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 312,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 16525,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.3999,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 21.1818,
+            "Country": 0.0
+        },
+        "duplicate_records": 1431,
+        "duplicate_percentage": 1.8343,
+        "growth_rate": 32.0095,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 78015,
+                "mean": 8.637518425943728,
+                "stddev": 77.03904040186424,
+                "min": -9000.0,
+                "max": 9360.0
+            },
+            "UnitPrice": {
+                "count": 78015,
+                "mean": 3.869946318017075,
+                "stddev": 36.58351197807822,
+                "min": 0.0,
+                "max": 6706.71
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 21.18%",
+            "High numerical outlier percentage in Quantity: 10.49%",
+            "High numerical outlier percentage in UnitPrice: 8.14%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 8.0,
+                "iqr": 7.0,
+                "lower_bound": -9.5,
+                "upper_bound": 18.5,
+                "outlier_count": 8181,
+                "outlier_percentage": 10.4864
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.95,
+                "iqr": 2.7,
+                "lower_bound": -2.8000000000000007,
+                "upper_bound": 8.0,
+                "outlier_count": 6354,
+                "outlier_percentage": 8.1446
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2010-12",
+        "total_records": 65004,
+        "total_columns": 8,
+        "missing_percentage": 4.5349,
+        "total_missing": 23583,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 232,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 23351,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.3569,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 35.9224,
+            "Country": 0.0
+        },
+        "duplicate_records": 23023,
+        "duplicate_percentage": 35.4178,
+        "growth_rate": -16.6776,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 65004,
+                "mean": 7.828379792012799,
+                "stddev": 64.53889246016858,
+                "min": -9360.0,
+                "max": 2880.0
+            },
+            "UnitPrice": {
+                "count": 65004,
+                "mean": 6.564512953049299,
+                "stddev": 159.12309598264653,
+                "min": 0.0,
+                "max": 13541.33
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 35.92%",
+            "High duplicate percentage: 35.42%",
+            "High numerical outlier percentage in Quantity: 10.94%",
+            "High numerical outlier percentage in UnitPrice: 7.31%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 6.0,
+                "iqr": 5.0,
+                "lower_bound": -6.5,
+                "upper_bound": 13.5,
+                "outlier_count": 7111,
+                "outlier_percentage": 10.9393
+            },
+            "UnitPrice": {
+                "q1": 1.28,
+                "q3": 4.25,
+                "iqr": 2.9699999999999998,
+                "lower_bound": -3.175,
+                "upper_bound": 8.705,
+                "outlier_count": 4753,
+                "outlier_percentage": 7.3119
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 55,
+        "health_status": "Critical",
+        "severity": "Critical",
+        "deductions": [
+            "High missing values: -15",
+            "High duplicate percentage: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-01",
+        "total_records": 35147,
+        "total_columns": 8,
+        "missing_percentage": 4.7476,
+        "total_missing": 13349,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 114,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 13235,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.3244,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 37.6561,
+            "Country": 0.0
+        },
+        "duplicate_records": 247,
+        "duplicate_percentage": 0.7028,
+        "growth_rate": -45.931,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 35147,
+                "mean": 8.790679147580164,
+                "stddev": 562.2835883204226,
+                "min": -74215.0,
+                "max": 74215.0
+            },
+            "UnitPrice": {
+                "count": 35147,
+                "mean": 4.915150652972672,
+                "stddev": 127.12441942842499,
+                "min": 0.0,
+                "max": 16888.02
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 37.66%",
+            "High numerical outlier percentage in Quantity: 10.56%",
+            "High numerical outlier percentage in UnitPrice: 7.75%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 8.0,
+                "iqr": 7.0,
+                "lower_bound": -9.5,
+                "upper_bound": 18.5,
+                "outlier_count": 3713,
+                "outlier_percentage": 10.5642
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.13,
+                "iqr": 2.88,
+                "lower_bound": -3.0700000000000003,
+                "upper_bound": 8.45,
+                "outlier_count": 2725,
+                "outlier_percentage": 7.7532
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-02",
+        "total_records": 27707,
+        "total_columns": 8,
+        "missing_percentage": 3.3426,
+        "total_missing": 7409,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 65,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 7344,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.2346,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 26.5059,
+            "Country": 0.0
+        },
+        "duplicate_records": 228,
+        "duplicate_percentage": 0.8229,
+        "growth_rate": -21.1682,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 27707,
+                "mean": 10.033168513372072,
+                "stddev": 49.984179449796784,
+                "min": -1430.0,
+                "max": 3906.0
+            },
+            "UnitPrice": {
+                "count": 27707,
+                "mean": 4.599876204568969,
+                "stddev": 48.799774943727044,
+                "min": 0.0,
+                "max": 5575.28
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 26.51%",
+            "High numerical outlier percentage in Quantity: 10.35%",
+            "High numerical outlier percentage in UnitPrice: 7.12%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 2869,
+                "outlier_percentage": 10.3548
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.15,
+                "iqr": 2.9000000000000004,
+                "lower_bound": -3.1000000000000005,
+                "upper_bound": 8.5,
+                "outlier_count": 1974,
+                "outlier_percentage": 7.1246
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-03",
+        "total_records": 36748,
+        "total_columns": 8,
+        "missing_percentage": 3.0923,
+        "total_missing": 9091,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 165,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 8926,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.449,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 24.2898,
+            "Country": 0.0
+        },
+        "duplicate_records": 309,
+        "duplicate_percentage": 0.8409,
+        "growth_rate": 32.6307,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 36748,
+                "mean": 9.575269402416458,
+                "stddev": 55.312703462790566,
+                "min": -5368.0,
+                "max": 3000.0
+            },
+            "UnitPrice": {
+                "count": 36748,
+                "mean": 4.666553553935411,
+                "stddev": 50.03781772019056,
+                "min": 0.0,
+                "max": 5693.05
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 24.29%",
+            "High numerical outlier percentage in Quantity: 11.04%",
+            "High numerical outlier percentage in UnitPrice: 8.27%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 4056,
+                "outlier_percentage": 11.0373
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.13,
+                "iqr": 2.88,
+                "lower_bound": -3.0700000000000003,
+                "upper_bound": 8.45,
+                "outlier_count": 3038,
+                "outlier_percentage": 8.2671
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-04",
+        "total_records": 29916,
+        "total_columns": 8,
+        "missing_percentage": 2.9015,
+        "total_missing": 6944,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 226,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 6718,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.7554,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 22.4562,
+            "Country": 0.0
+        },
+        "duplicate_records": 215,
+        "duplicate_percentage": 0.7187,
+        "growth_rate": -18.5915,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 29916,
+                "mean": 9.663658243080626,
+                "stddev": 53.69629769424164,
+                "min": -3114.0,
+                "max": 3114.0
+            },
+            "UnitPrice": {
+                "count": 29916,
+                "mean": 4.317587946249263,
+                "stddev": 34.630322781663516,
+                "min": 0.0,
+                "max": 2382.92
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 22.46%",
+            "High numerical outlier percentage in Quantity: 11.20%",
+            "High numerical outlier percentage in UnitPrice: 7.61%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 3350,
+                "outlier_percentage": 11.198
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.13,
+                "iqr": 2.88,
+                "lower_bound": -3.0700000000000003,
+                "upper_bound": 8.45,
+                "outlier_count": 2277,
+                "outlier_percentage": 7.6113
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-05",
+        "total_records": 37030,
+        "total_columns": 8,
+        "missing_percentage": 2.7883,
+        "total_missing": 8260,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 138,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 8122,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.3727,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 21.9336,
+            "Country": 0.0
+        },
+        "duplicate_records": 248,
+        "duplicate_percentage": 0.6697,
+        "growth_rate": 23.7799,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 37030,
+                "mean": 10.272508776667566,
+                "stddev": 47.52739874340097,
+                "min": -2376.0,
+                "max": 4300.0
+            },
+            "UnitPrice": {
+                "count": 37030,
+                "mean": 5.149485822306751,
+                "stddev": 86.5120252615879,
+                "min": 0.0,
+                "max": 8142.75
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 21.93%",
+            "High numerical outlier percentage in Quantity: 5.69%",
+            "High numerical outlier percentage in UnitPrice: 8.09%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 2106,
+                "outlier_percentage": 5.6873
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.13,
+                "iqr": 2.88,
+                "lower_bound": -3.0700000000000003,
+                "upper_bound": 8.45,
+                "outlier_count": 2996,
+                "outlier_percentage": 8.0907
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-06",
+        "total_records": 36874,
+        "total_columns": 8,
+        "missing_percentage": 3.0947,
+        "total_missing": 9129,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 91,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 9038,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.2468,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 24.5105,
+            "Country": 0.0
+        },
+        "duplicate_records": 265,
+        "duplicate_percentage": 0.7187,
+        "growth_rate": -0.4213,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 36874,
+                "mean": 9.26460378586538,
+                "stddev": 96.55020482313284,
+                "min": -9600.0,
+                "max": 4000.0
+            },
+            "UnitPrice": {
+                "count": 36874,
+                "mean": 5.443329717416555,
+                "stddev": 207.66501904830375,
+                "min": 0.0,
+                "max": 38970.0
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 24.51%",
+            "High numerical outlier percentage in Quantity: 11.24%",
+            "High numerical outlier percentage in UnitPrice: 7.76%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 4144,
+                "outlier_percentage": 11.2383
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.13,
+                "iqr": 2.88,
+                "lower_bound": -3.0700000000000003,
+                "upper_bound": 8.45,
+                "outlier_count": 2861,
+                "outlier_percentage": 7.7589
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-07",
+        "total_records": 39518,
+        "total_columns": 8,
+        "missing_percentage": 3.8498,
+        "total_missing": 12171,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 155,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 12016,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.3922,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 30.4064,
+            "Country": 0.0
+        },
+        "duplicate_records": 251,
+        "duplicate_percentage": 0.6352,
+        "growth_rate": 7.1704,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 39518,
+                "mean": 9.897160787489245,
+                "stddev": 44.656387350299504,
+                "min": -3100.0,
+                "max": 3186.0
+            },
+            "UnitPrice": {
+                "count": 39518,
+                "mean": 4.350088339491319,
+                "stddev": 55.65484173870692,
+                "min": 0.0,
+                "max": 6497.47
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 30.41%",
+            "High numerical outlier percentage in Quantity: 11.40%",
+            "High numerical outlier percentage in UnitPrice: 7.64%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 4507,
+                "outlier_percentage": 11.4049
+            },
+            "UnitPrice": {
+                "q1": 0.85,
+                "q3": 3.75,
+                "iqr": 2.9,
+                "lower_bound": -3.4999999999999996,
+                "upper_bound": 8.1,
+                "outlier_count": 3021,
+                "outlier_percentage": 7.6446
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-08",
+        "total_records": 35284,
+        "total_columns": 8,
+        "missing_percentage": 2.7293,
+        "total_missing": 7704,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 82,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 7622,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.2324,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 21.6019,
+            "Country": 0.0
+        },
+        "duplicate_records": 220,
+        "duplicate_percentage": 0.6235,
+        "growth_rate": -10.7141,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 35284,
+                "mean": 11.512271851264028,
+                "stddev": 42.484080983858036,
+                "min": -1060.0,
+                "max": 2880.0
+            },
+            "UnitPrice": {
+                "count": 35284,
+                "mean": 4.262149416165642,
+                "stddev": 124.0615155603496,
+                "min": -11062.06,
+                "max": 11062.06
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 21.60%",
+            "High numerical outlier percentage in Quantity: 6.52%",
+            "High numerical outlier percentage in UnitPrice: 8.26%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 2301,
+                "outlier_percentage": 6.5214
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.95,
+                "iqr": 2.7,
+                "lower_bound": -2.8000000000000007,
+                "upper_bound": 8.0,
+                "outlier_count": 2913,
+                "outlier_percentage": 8.2559
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-09",
+        "total_records": 50226,
+        "total_columns": 8,
+        "missing_percentage": 2.3651,
+        "total_missing": 9503,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 99,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 9404,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.1971,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 18.7234,
+            "Country": 0.0
+        },
+        "duplicate_records": 365,
+        "duplicate_percentage": 0.7267,
+        "growth_rate": 42.3478,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 50226,
+                "mean": 10.946860191932466,
+                "stddev": 45.30616102009011,
+                "min": -3667.0,
+                "max": 1944.0
+            },
+            "UnitPrice": {
+                "count": 50226,
+                "mean": 3.966774419623987,
+                "stddev": 48.81483926285,
+                "min": 0.0,
+                "max": 7427.97
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 6.02%",
+            "High numerical outlier percentage in UnitPrice: 8.16%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 2.0,
+                "q3": 12.0,
+                "iqr": 10.0,
+                "lower_bound": -13.0,
+                "upper_bound": 27.0,
+                "outlier_count": 3026,
+                "outlier_percentage": 6.0248
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.95,
+                "iqr": 2.7,
+                "lower_bound": -2.8000000000000007,
+                "upper_bound": 8.0,
+                "outlier_count": 4096,
+                "outlier_percentage": 8.1551
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-10",
+        "total_records": 60742,
+        "total_columns": 8,
+        "missing_percentage": 2.089,
+        "total_missing": 10151,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 104,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 10047,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.1712,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 16.5404,
+            "Country": 0.0
+        },
+        "duplicate_records": 773,
+        "duplicate_percentage": 1.2726,
+        "growth_rate": 20.9374,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 60742,
+                "mean": 9.392710151131013,
+                "stddev": 52.604217566351295,
+                "min": -4830.0,
+                "max": 4800.0
+            },
+            "UnitPrice": {
+                "count": 60742,
+                "mean": 4.336934740378116,
+                "stddev": 56.92363402397133,
+                "min": 0.0,
+                "max": 5942.57
+            }
+        },
+        "data_quality_anomalies": [
+            "High numerical outlier percentage in Quantity: 5.45%",
+            "High numerical outlier percentage in UnitPrice: 8.60%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 12.0,
+                "iqr": 11.0,
+                "lower_bound": -15.5,
+                "upper_bound": 28.5,
+                "outlier_count": 3308,
+                "outlier_percentage": 5.446
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.95,
+                "iqr": 2.7,
+                "lower_bound": -2.8000000000000007,
+                "upper_bound": 8.0,
+                "outlier_count": 5225,
+                "outlier_percentage": 8.602
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 85,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-11",
+        "total_records": 84711,
+        "total_columns": 8,
+        "missing_percentage": 2.8314,
+        "total_missing": 19188,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 75,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 19113,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.0885,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 22.5626,
+            "Country": 0.0
+        },
+        "duplicate_records": 1368,
+        "duplicate_percentage": 1.6149,
+        "growth_rate": 39.4603,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 84711,
+                "mean": 8.738959521195595,
+                "stddev": 54.481731394494844,
+                "min": -1560.0,
+                "max": 12540.0
+            },
+            "UnitPrice": {
+                "count": 84711,
+                "mean": 3.8619524028768804,
+                "stddev": 42.2227588094139,
+                "min": 0.0,
+                "max": 8286.22
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 22.56%",
+            "High numerical outlier percentage in Quantity: 9.59%",
+            "High numerical outlier percentage in UnitPrice: 8.95%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 8125,
+                "outlier_percentage": 9.5914
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 3.75,
+                "iqr": 2.5,
+                "lower_bound": -2.5,
+                "upper_bound": 7.5,
+                "outlier_count": 7581,
+                "outlier_percentage": 8.9493
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 70,
+        "health_status": "Warning",
+        "severity": "Warning",
+        "deductions": [
+            "High missing values: -15",
+            "High numerical outliers: -15"
+        ]
+    },
+    {
+        "month": "2011-12",
+        "total_records": 25526,
+        "total_columns": 8,
+        "missing_percentage": 3.8583,
+        "total_missing": 7879,
+        "missing_values_per_column": {
+            "InvoiceNo": 0,
+            "StockCode": 0,
+            "Description": 15,
+            "Quantity": 0,
+            "InvoiceDate": 0,
+            "UnitPrice": 0,
+            "CustomerID": 7864,
+            "Country": 0
+        },
+        "missing_percentage_per_column": {
+            "InvoiceNo": 0.0,
+            "StockCode": 0.0,
+            "Description": 0.0588,
+            "Quantity": 0.0,
+            "InvoiceDate": 0.0,
+            "UnitPrice": 0.0,
+            "CustomerID": 30.8078,
+            "Country": 0.0
+        },
+        "duplicate_records": 279,
+        "duplicate_percentage": 1.093,
+        "growth_rate": -69.867,
+        "numerical_statistics": {
+            "Quantity": {
+                "count": 25526,
+                "mean": 8.866802475906919,
+                "stddev": 717.834957640345,
+                "min": -80995.0,
+                "max": 80995.0
+            },
+            "UnitPrice": {
+                "count": 25526,
+                "mean": 5.246950560213019,
+                "stddev": 137.5387403565027,
+                "min": 0.0,
+                "max": 17836.46
+            }
+        },
+        "data_quality_anomalies": [
+            "High missing values in CustomerID: 30.81%",
+            "Abnormal batch-size change: -69.87%",
+            "High numerical outlier percentage in Quantity: 9.71%",
+            "High numerical outlier percentage in UnitPrice: 6.77%"
+        ],
+        "outlier_analysis": {
+            "Quantity": {
+                "q1": 1.0,
+                "q3": 10.0,
+                "iqr": 9.0,
+                "lower_bound": -12.5,
+                "upper_bound": 23.5,
+                "outlier_count": 2479,
+                "outlier_percentage": 9.7117
+            },
+            "UnitPrice": {
+                "q1": 1.25,
+                "q3": 4.13,
+                "iqr": 2.88,
+                "lower_bound": -3.0700000000000003,
+                "upper_bound": 8.45,
+                "outlier_count": 1729,
+                "outlier_percentage": 6.7735
+            }
+        },
+        "schema": {
+            "InvoiceNo": "string",
+            "StockCode": "string",
+            "Description": "string",
+            "Quantity": "bigint",
+            "InvoiceDate": "timestamp_ntz",
+            "UnitPrice": "double",
+            "CustomerID": "string",
+            "Country": "string"
+        },
+        "schema_drift": {
+            "detected": false,
+            "baseline": false,
+            "added_columns": [],
+            "removed_columns": [],
+            "changed_data_types": []
+        },
+        "health_score": 50,
+        "health_status": "Critical",
+        "severity": "Critical",
+        "deductions": [
+            "High missing values: -15",
+            "Abnormal batch-size change: -20",
+            "High numerical outliers: -15"
+        ]
+    }
+]
