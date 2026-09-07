@@ -27,6 +27,12 @@ FINGERPRINT_FILE = (
     / "monthly_fingerprints.json"
 )
 
+BEHAVIORAL_DRIFT_FILE = (
+    BASE_DIR
+    / "fingerprints"
+    / "behavioral_drift.json"
+)
+
 
 # ============================================================
 # LOAD FINGERPRINTS
@@ -44,7 +50,25 @@ def load_fingerprints():
         return json.load(file)
 
 
+@st.cache_data
+def load_behavioral_drift():
+
+    if not BEHAVIORAL_DRIFT_FILE.exists():
+
+        return []
+
+    with open(
+        BEHAVIORAL_DRIFT_FILE,
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return json.load(file)
+
+
 fingerprints = load_fingerprints()
+
+behavioral_fingerprints = load_behavioral_drift()
 
 
 months = [
@@ -773,3 +797,183 @@ st.write(
 st.write(
     "DOI: 10.24432/C5CG6D"
 )
+
+
+# ============================================================
+# IMPLEMENTATION 2
+# BEHAVIORAL DRIFT INTELLIGENCE
+# ============================================================
+
+st.divider()
+
+st.header(
+    "Implementation 2 — Behavioral Drift Intelligence"
+)
+
+
+st.write(
+    "Weekly PySpark fingerprints compare customer, product, transaction, "
+    "pricing, quantity, cancellation, and data-quality behaviour with "
+    "earlier weekly batches."
+)
+
+
+if not behavioral_fingerprints:
+
+    st.info(
+        "Behavioral fingerprints have not been generated yet. "
+        "Run src/behavioral_drift.py to populate this section."
+    )
+
+else:
+
+    behavioral_weeks = [
+        item["week"]
+        for item in behavioral_fingerprints
+    ]
+
+    selected_behavioral_week = st.selectbox(
+        "Select Weekly Batch",
+        behavioral_weeks,
+        index=len(behavioral_weeks) - 1,
+        key="behavioral_week_selector"
+    )
+
+    selected_behavioral_data = next(
+        item
+        for item in behavioral_fingerprints
+        if item["week"] == selected_behavioral_week
+    )
+
+    b1, b2, b3 = st.columns(3)
+
+    b1.metric(
+        "Selected Week",
+        selected_behavioral_data["week"]
+    )
+
+    b2.metric(
+        "Behavioral Similarity Score",
+        f"{selected_behavioral_data['behavioral_similarity_score']}/100"
+    )
+
+    b3.metric(
+        "Drift Status",
+        selected_behavioral_data["drift_status"]
+    )
+
+    if not selected_behavioral_data["baseline_ready"]:
+
+        st.info(
+            "This early weekly batch is accumulating historical context. "
+            "A statistical baseline begins after four prior weeks."
+        )
+
+    elif selected_behavioral_data["drift_status"] == "Normal":
+
+        st.success(
+            "The current weekly behaviour is consistent with its historical baseline."
+        )
+
+    elif selected_behavioral_data["drift_status"] == "Moderate Drift":
+
+        st.warning(
+            "The current weekly behaviour differs moderately from its historical baseline."
+        )
+
+    else:
+
+        st.error(
+            "The current weekly behaviour differs substantially from its historical baseline."
+        )
+
+    st.subheader(
+        "Top Deviating Features"
+    )
+
+    top_features = selected_behavioral_data["top_deviating_features"]
+
+    if top_features:
+
+        top_features_df = pd.DataFrame(
+            [
+                {
+                    "Feature": item["feature"].replace("_", " ").title(),
+                    "Deviation (z-score)": round(item["z_score"], 2),
+                    "Current Batch": item["current"],
+                    "Historical Mean": item["baseline_mean"]
+                }
+                for item in top_features
+            ]
+        )
+
+        st.dataframe(
+            top_features_df,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    else:
+
+        st.write(
+            "No deviations are ranked until the historical baseline is ready."
+        )
+
+    st.subheader(
+        "Historical Behavioral Trend"
+    )
+
+    behavioral_history_df = pd.DataFrame(
+        [
+            {
+                "Week": item["week"],
+                "Behavioral Similarity Score": item["behavioral_similarity_score"]
+            }
+            for item in behavioral_fingerprints
+        ]
+    )
+
+    st.line_chart(
+        behavioral_history_df.set_index("Week")[["Behavioral Similarity Score"]]
+    )
+
+    st.subheader(
+        "Current Batch vs Historical Baseline"
+    )
+
+    comparison_rows = []
+
+    for feature, comparison in selected_behavioral_data[
+        "feature_comparison"
+    ].items():
+
+        current_value = comparison["current"]
+        baseline_value = comparison["baseline_mean"]
+
+        comparison_rows.append(
+            {
+                "Feature": feature.replace("_", " ").title(),
+                "Current Batch": current_value,
+                "Historical Mean": baseline_value,
+                "Difference": (
+                    current_value - baseline_value
+                    if baseline_value is not None
+                    else None
+                ),
+                "Deviation (z-score)": comparison["z_score"]
+            }
+        )
+
+    comparison_df = pd.DataFrame(comparison_rows)
+
+    st.dataframe(
+        comparison_df,
+        use_container_width=True,
+        hide_index=True
+    )
+
+    st.caption(
+        "The baseline for each week uses only earlier weekly fingerprints. "
+        "Similarity is calculated from the capped mean absolute z-score "
+        "across all behavioural features."
+    )
