@@ -4,6 +4,8 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from src.upload_health import analyze_uploaded_csv, create_spark_session
+
 st.set_page_config(page_title="Intelligent Big Data Monitoring", page_icon="📊", layout="wide")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +52,11 @@ def short_reason(reason, limit=105):
     return reason if len(reason) <= limit else f"{reason[:limit - 1].rstrip()}…"
 
 
+@st.cache_resource
+def get_spark_session():
+    return create_spark_session()
+
+
 monthly = load_json(str(MONTHLY_FILE))
 behavioral = load_json(str(BEHAVIORAL_FILE))
 alerts = load_json(str(ALERT_FILE)) if ALERT_FILE.exists() else []
@@ -69,6 +76,95 @@ st.info(
     "No transaction dates were altered and no synthetic 2023/2024 data was created. "
     "Survey ResponseID is shown only as survey-response diversity; it is not treated as a confirmed customer identifier."
 )
+
+st.divider()
+st.header("Analyze Your Dataset")
+st.caption("Upload your CSV file to perform an automated data health assessment.")
+uploaded_file = st.file_uploader("Upload CSV File", type=["csv"])
+
+if not uploaded_file:
+    st.info("Upload a .csv file to see schema, missing values, duplicates, outliers, and a prototype data health score.")
+else:
+    st.write(f"**File Name:** {uploaded_file.name}")
+    spark = get_spark_session()
+    analysis, error = analyze_uploaded_csv(spark, uploaded_file)
+    if error:
+        st.error(error)
+    elif analysis is None:
+        st.error("Unable to analyze the uploaded file.")
+    else:
+        st.write(f"**Rows:** {analysis.row_count:,}")
+        st.write(f"**Columns:** {analysis.column_count}")
+        left, middle, right, right2, right3, right4 = st.columns(6)
+        left.metric("Data Health Score", f"{analysis.data_health_score}/100")
+        middle.metric("Health Status", analysis.health_status)
+        right.metric("Rows", f"{analysis.row_count:,}")
+        right2.metric("Columns", analysis.column_count)
+        right3.metric("Missing %", f"{analysis.overall_missing_percentage:.2f}%")
+        right4.metric("Duplicate %", f"{analysis.duplicate_percentage:.2f}%")
+
+        if analysis.date_detection_message:
+            st.info(analysis.date_detection_message)
+
+        st.caption("Prototype configurable health thresholds")
+
+        if not analysis.has_valid_rows:
+            st.warning("The uploaded CSV appears to be empty or unreadable enough to analyze safely.")
+
+        if not analysis.has_readable_columns:
+            st.warning("No readable columns were detected.")
+
+        st.subheader("Schema Overview")
+        st.dataframe(pd.DataFrame(analysis.schema_overview), use_container_width=True, hide_index=True)
+
+        st.subheader("Missing Values by Column")
+        st.dataframe(pd.DataFrame(analysis.missing_by_column), use_container_width=True, hide_index=True, column_config={"Missing %": st.column_config.NumberColumn(format="%.2f%%")})
+
+        st.subheader("Numerical Summary")
+        if analysis.numerical_summary:
+            st.dataframe(pd.DataFrame(analysis.numerical_summary), use_container_width=True, hide_index=True, column_config={
+                "Mean": st.column_config.NumberColumn(format="%.4f"),
+                "Std Dev": st.column_config.NumberColumn(format="%.4f"),
+                "Minimum": st.column_config.NumberColumn(format="%.4f"),
+                "Maximum": st.column_config.NumberColumn(format="%.4f"),
+            })
+        else:
+            st.info("No numerical columns were detected.")
+
+        st.subheader("Outlier Analysis")
+        if analysis.outlier_analysis:
+            st.dataframe(pd.DataFrame(analysis.outlier_analysis), use_container_width=True, hide_index=True, column_config={"Outlier %": st.column_config.NumberColumn(format="%.2f%%")})
+        else:
+            st.info("No suitable numerical columns were found for IQR outlier analysis.")
+
+        st.subheader("Detected Issues")
+        for issue in analysis.detected_issues:
+            st.write(f"- {issue}")
+
+        with st.expander("How is the Data Health Score calculated?"):
+            st.write("Score starts at 100 and is reduced by transparent penalties.")
+            st.markdown(
+                """
+                - Missing-value penalty:
+                  - <= 1%: 0
+                  - > 1% and <= 5%: -10
+                  - > 5% and <= 15%: -20
+                  - > 15%: -30
+                - Duplicate penalty:
+                  - <= 1%: 0
+                  - > 1% and <= 5%: -10
+                  - > 5% and <= 15%: -20
+                  - > 15%: -30
+                - Outlier penalty:
+                  - <= 2%: 0
+                  - > 2% and <= 5%: -5
+                  - > 5% and <= 10%: -10
+                  - > 10%: -20
+                - Optional usability penalty:
+                  - Applied only when the dataset has serious usability problems such as unreadable columns or no valid rows.
+                """
+            )
+            st.caption("These are prototype configurable health thresholds, not universal standards.")
 
 total_records = sum(item["total_records"] for item in monthly)
 overview_records, overview_dates, overview_weeks = st.columns([1.15, 1.75, 1.1])
