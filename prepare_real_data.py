@@ -1,300 +1,98 @@
-import pandas as pd
+"""Prepare the genuine 2022 Amazon purchases data with PySpark."""
+
 from pathlib import Path
+import shutil
 
+import pyarrow.parquet as pq
+from py4j.protocol import Py4JJavaError
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.types import DateType, DoubleType, StringType, StructField, StructType
 
-# ============================================================
-# PATHS
-# ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent
+INPUT_FILE = BASE_DIR / "data" / "amazon-purchases.csv"
+OUTPUT_FILE = BASE_DIR / "data" / "amazon_purchases_2022.parquet"
 
-INPUT_FILE = (
-    BASE_DIR
-    / "data"
-    / "online_retail_II.xlsx"
-)
+SOURCE_COLUMNS = [
+    "Order Date", "Purchase Price Per Unit", "Quantity", "Shipping Address State",
+    "Title", "ASIN/ISBN (Product Code)", "Category", "Survey ResponseID",
+]
 
-OUTPUT_FILE = (
-    BASE_DIR
-    / "data"
-    / "online_retail_II.parquet"
-)
-
-
-# ============================================================
-# READ DATASET
-# ============================================================
-
-print("Reading Online Retail II dataset...")
-
-
-sheets = pd.read_excel(
-    INPUT_FILE,
-    sheet_name=None
-)
+SOURCE_SCHEMA = StructType([
+    StructField("Order Date", DateType(), True),
+    StructField("Purchase Price Per Unit", DoubleType(), True),
+    StructField("Quantity", DoubleType(), True),
+    StructField("Shipping Address State", StringType(), True),
+    StructField("Title", StringType(), True),
+    StructField("ASIN/ISBN (Product Code)", StringType(), True),
+    StructField("Category", StringType(), True),
+    StructField("Survey ResponseID", StringType(), True),
+])
 
 
-frames = []
-
-
-for sheet_name, df in sheets.items():
-
-    print(
-        f"Reading sheet: {sheet_name} "
-        f"({len(df):,} rows)"
+def main():
+    spark = (
+        SparkSession.builder.appName("PrepareAmazonPurchases2022")
+        .master("local[*]").config("spark.ui.enabled", "false")
+        .config("spark.hadoop.fs.permissions.enabled", "false").getOrCreate()
     )
-
-
-    # ========================================================
-    # NORMALIZE COLUMN NAMES BETWEEN BOTH EXCEL SHEETS
-    # ========================================================
-
-    rename_map = {
-
-        "Invoice": "InvoiceNo",
-        "InvoiceNo": "InvoiceNo",
-
-        "StockCode": "StockCode",
-
-        "Description": "Description",
-
-        "Quantity": "Quantity",
-
-        "InvoiceDate": "InvoiceDate",
-
-        "Price": "UnitPrice",
-        "UnitPrice": "UnitPrice",
-
-        "Customer ID": "CustomerID",
-        "CustomerID": "CustomerID",
-
-        "Country": "Country"
-    }
-
-
-    df = df.rename(
-        columns=rename_map
-    )
-
-
-    required_columns = [
-
-        "InvoiceNo",
-        "StockCode",
-        "Description",
-        "Quantity",
-        "InvoiceDate",
-        "UnitPrice",
-        "CustomerID",
-        "Country"
-
-    ]
-
-
-    df = df[
-        required_columns
-    ]
-
-
-    frames.append(
-        df
-    )
-
-
-# ============================================================
-# COMBINE BOTH PUBLISHED DATASET SHEETS
-# ============================================================
-
-data = pd.concat(
-    frames,
-    ignore_index=True
-)
-
-
-# ============================================================
-# STANDARDIZE DATATYPES
-# ============================================================
-
-# ------------------------------------------------------------
-# InvoiceNo
-#
-# Some invoices contain cancellation codes such as C489449.
-# Therefore InvoiceNo must be treated as an identifier/string,
-# not as an integer.
-# ------------------------------------------------------------
-
-data["InvoiceNo"] = (
-    data["InvoiceNo"]
-    .astype("string")
-)
-
-
-# ------------------------------------------------------------
-# StockCode
-#
-# Stock codes are identifiers and may contain both numbers
-# and characters.
-# ------------------------------------------------------------
-
-data["StockCode"] = (
-    data["StockCode"]
-    .astype("string")
-)
-
-
-# ------------------------------------------------------------
-# Description
-# ------------------------------------------------------------
-
-data["Description"] = (
-    data["Description"]
-    .astype("string")
-)
-
-
-# ------------------------------------------------------------
-# CustomerID
-#
-# Excel may interpret Customer IDs as floats because the
-# column contains missing values.
-#
-# Convert to string and remove the artificial ".0".
-# Missing values remain missing.
-# ------------------------------------------------------------
-
-data["CustomerID"] = (
-    data["CustomerID"]
-    .astype("string")
-    .str.replace(
-        r"\.0$",
-        "",
-        regex=True
-    )
-)
-
-
-# ------------------------------------------------------------
-# Country
-# ------------------------------------------------------------
-
-data["Country"] = (
-    data["Country"]
-    .astype("string")
-)
-
-
-# ------------------------------------------------------------
-# Quantity
-# ------------------------------------------------------------
-
-data["Quantity"] = pd.to_numeric(
-    data["Quantity"],
-    errors="coerce"
-)
-
-
-# ------------------------------------------------------------
-# UnitPrice
-# ------------------------------------------------------------
-
-data["UnitPrice"] = pd.to_numeric(
-    data["UnitPrice"],
-    errors="coerce"
-)
-
-
-# ------------------------------------------------------------
-# InvoiceDate
-# ------------------------------------------------------------
-
-data["InvoiceDate"] = pd.to_datetime(
-    data["InvoiceDate"],
-    errors="coerce"
-)
-
-
-# ============================================================
-# DATASET INFORMATION
-# ============================================================
-
-print("\nDataset loaded.")
-
-print(
-    "Rows:",
-    f"{len(data):,}"
-)
-
-print(
-    "Columns:",
-    len(data.columns)
-)
-
-print(
-    "Date Range:",
-    data["InvoiceDate"].min(),
-    "to",
-    data["InvoiceDate"].max()
-)
-
-
-print("\nMissing Values:")
-
-print(
-    data.isna().sum()
-)
-
-
-print("\nColumn Data Types:")
-
-print(
-    data.dtypes
-)
-
-
-# ============================================================
-# IMPORTANT:
-#
-# DO NOT remove:
-#
-# - Missing values
-# - Duplicate records
-# - Negative quantities
-# - Unusual prices
-# - Cancelled invoices
-#
-# These are genuine characteristics of the published dataset
-# and are useful for Data Health Analysis.
-# ============================================================
-
-
-# ============================================================
-# SAVE AS PARQUET
-# ============================================================
-
-print(
-    "\nSaving dataset as Parquet..."
-)
-
-
-data.to_parquet(
-    OUTPUT_FILE,
-    index=False,
-    engine="pyarrow",
-    coerce_timestamps="us",
-    allow_truncated_timestamps=True
-)
-
-
-print(
-    "\nDataset successfully saved:"
-)
-
-print(
-    OUTPUT_FILE
-)
-
-
-print(
-    "\nNo synthetic transaction records "
-    "were generated or added."
-)
+    spark.sparkContext.setLogLevel("WARN")
+
+    try:
+        print("Loading Open e-commerce 1.0 Amazon purchases CSV with PySpark...")
+        source_df = (
+            spark.read.option("header", True).option("dateFormat", "yyyy-MM-dd")
+            .option("quote", '"').option("escape", '"').option("multiLine", True)
+            .schema(SOURCE_SCHEMA).csv(str(INPUT_FILE))
+        )
+
+        if source_df.columns != SOURCE_COLUMNS:
+            raise ValueError(f"Unexpected Amazon CSV schema: {source_df.columns}")
+
+        prepared_df = source_df
+        for column in [
+            "Shipping Address State", "Title", "ASIN/ISBN (Product Code)",
+            "Category", "Survey ResponseID",
+        ]:
+            prepared_df = prepared_df.withColumn(
+                column,
+                F.when(F.trim(F.col(column)) == "", F.lit(None)).otherwise(F.col(column)),
+            )
+
+        invalid_dates = prepared_df.filter(F.col("Order Date").isNull()).count()
+        if invalid_dates:
+            raise ValueError(f"Found {invalid_dates} null or unparseable Order Date values.")
+
+        amazon_2022_df = prepared_df.filter(F.year(F.col("Order Date")) == 2022)
+        validation = amazon_2022_df.agg(
+            F.count(F.lit(1)).alias("records"),
+            F.min("Order Date").alias("earliest_date"),
+            F.max("Order Date").alias("latest_date"),
+        ).first()
+        if validation["records"] == 0:
+            raise ValueError("No genuine 2022 Amazon purchase records were found.")
+
+        print(f"Genuine 2022 records: {validation['records']:,}")
+        print(f"2022 source range: {validation['earliest_date']} to {validation['latest_date']}")
+        try:
+            amazon_2022_df.write.mode("overwrite").parquet(str(OUTPUT_FILE))
+        except Py4JJavaError:
+            # Spark 4 on this Windows host cannot create local output folders
+            # without winutils.exe. The Spark DataFrame remains the ingestion,
+            # validation, and filtering engine; Arrow is only a local Parquet
+            # writer fallback for this environment.
+            if OUTPUT_FILE.exists():
+                if OUTPUT_FILE.is_dir():
+                    shutil.rmtree(OUTPUT_FILE)
+                else:
+                    OUTPUT_FILE.unlink()
+            pq.write_table(amazon_2022_df.toArrow(), str(OUTPUT_FILE))
+            print("Used Arrow Parquet writer fallback because local Windows Spark lacks winutils.exe.")
+        print(f"Prepared Parquet saved to: {OUTPUT_FILE}")
+    finally:
+        spark.stop()
+
+
+if __name__ == "__main__":
+    main()

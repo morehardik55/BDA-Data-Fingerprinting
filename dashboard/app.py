@@ -1,979 +1,295 @@
-import streamlit as st
-import pandas as pd
 import json
 from pathlib import Path
 
+import pandas as pd
+import streamlit as st
 
-# ============================================================
-# PAGE CONFIG
-# ============================================================
-
-st.set_page_config(
-    page_title="Intelligent Data Fingerprinting",
-    page_icon="📊",
-    layout="wide"
-)
-
-
-# ============================================================
-# PATHS
-# ============================================================
+st.set_page_config(page_title="Intelligent Big Data Monitoring", page_icon="📊", layout="wide")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+MONTHLY_FILE = BASE_DIR / "fingerprints" / "monthly_fingerprints.json"
+BEHAVIORAL_FILE = BASE_DIR / "fingerprints" / "behavioral_drift.json"
+ALERT_FILE = BASE_DIR / "fingerprints" / "alert_history.json"
 
-FINGERPRINT_FILE = (
-    BASE_DIR
-    / "fingerprints"
-    / "monthly_fingerprints.json"
-)
-
-BEHAVIORAL_DRIFT_FILE = (
-    BASE_DIR
-    / "fingerprints"
-    / "behavioral_drift.json"
-)
-
-
-# ============================================================
-# LOAD FINGERPRINTS
-# ============================================================
-
-@st.cache_data
-def load_fingerprints():
-
-    with open(
-        FINGERPRINT_FILE,
-        "r",
-        encoding="utf-8"
-    ) as file:
-
-        return json.load(file)
+FEATURE_LABELS = {
+    "purchase_record_count": "Purchase Record Count",
+    "survey_response_diversity": "Survey Response Diversity",
+    "unique_product_code_count": "Unique Product Code Count",
+    "unique_category_count": "Unique Category Count",
+    "unique_shipping_state_count": "Unique Shipping State Count",
+    "average_quantity": "Average Quantity",
+    "quantity_stddev": "Quantity Standard Deviation",
+    "average_purchase_price_per_unit": "Average Purchase Price Per Unit",
+    "purchase_price_per_unit_stddev": "Purchase Price Per Unit Standard Deviation",
+    "missing_value_rate": "Missing-Value Rate",
+    "duplicate_rate": "Duplicate-Row Rate",
+}
+SEVERITY_RANK = {"INFO / NORMAL": 0, "WARNING": 1, "HIGH": 2, "CRITICAL": 3}
 
 
 @st.cache_data
-def load_behavioral_drift():
-
-    if not BEHAVIORAL_DRIFT_FILE.exists():
-
-        return []
-
-    with open(
-        BEHAVIORAL_DRIFT_FILE,
-        "r",
-        encoding="utf-8"
-    ) as file:
-
+def load_json(path):
+    with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
 
 
-fingerprints = load_fingerprints()
-
-behavioral_fingerprints = load_behavioral_drift()
-
-
-months = [
-    item["month"]
-    for item in fingerprints
-]
-
-
-# ============================================================
-# SIDEBAR
-# ============================================================
-
-st.sidebar.title(
-    "Data Health Monitor"
-)
+def show_severity(message, severity):
+    """Use native Streamlit status components while retaining visible severity text."""
+    visible_message = f"**{severity}** — {message}"
+    if severity == "INFO / NORMAL":
+        st.success(visible_message)
+    elif severity == "WARNING":
+        st.warning(visible_message)
+    else:  # HIGH and CRITICAL are immediately actionable statuses.
+        st.error(visible_message)
 
 
-selected_month = st.sidebar.selectbox(
-    "Select Transaction Month",
-    months,
-    index=len(months) - 1
-)
+def short_reason(reason, limit=105):
+    if not reason:
+        return "No reason recorded"
+    return reason if len(reason) <= limit else f"{reason[:limit - 1].rstrip()}…"
 
 
-selected_data = next(
-    item
-    for item in fingerprints
-    if item["month"] == selected_month
-)
+monthly = load_json(str(MONTHLY_FILE))
+behavioral = load_json(str(BEHAVIORAL_FILE))
+alerts = load_json(str(ALERT_FILE)) if ALERT_FILE.exists() else []
 
-
+st.sidebar.title("Data Health Monitor")
+st.sidebar.subheader("Active Dataset")
+st.sidebar.write("Open e-commerce 1.0 — Amazon Purchases")
+st.sidebar.caption("Genuine 2022 purchase records only")
 st.sidebar.divider()
+st.sidebar.write("Apache Spark / PySpark")
+st.sidebar.write("Parquet")
+st.sidebar.write("Streamlit")
 
-
-st.sidebar.subheader(
-    "Dataset"
-)
-
-st.sidebar.write(
-    "UCI Online Retail II"
-)
-
-st.sidebar.caption(
-    "Real public e-commerce transaction dataset"
-)
-
-
-st.sidebar.divider()
-
-
-st.sidebar.subheader(
-    "Technology Stack"
-)
-
-st.sidebar.write(
-    "Apache Spark / PySpark"
-)
-
-st.sidebar.write(
-    "Python"
-)
-
-st.sidebar.write(
-    "Pandas"
-)
-
-st.sidebar.write(
-    "Streamlit"
-)
-
-
-# ============================================================
-# TITLE
-# ============================================================
-
-st.title(
-    "Intelligent Data Fingerprinting "
-    "for Big Data Health Analysis"
-)
-
-
-st.write(
-    "PySpark-based monitoring of real monthly "
-    "transaction batches from the UCI Online Retail II dataset."
-)
-
-
+st.title("Intelligent Big Data Quality & Behavioral Drift Monitoring System using PySpark")
+st.write("PySpark monitoring of genuine 2022 purchase records from the public Open e-commerce 1.0 Amazon Purchases dataset.")
 st.info(
-    "Each batch is derived from the real InvoiceDate field. "
-    "No synthetic monthly transaction data is used."
+    "No transaction dates were altered and no synthetic 2023/2024 data was created. "
+    "Survey ResponseID is shown only as survey-response diversity; it is not treated as a confirmed customer identifier."
 )
 
+total_records = sum(item["total_records"] for item in monthly)
+overview_records, overview_dates, overview_weeks = st.columns([1.15, 1.75, 1.1])
+overview_records.metric("2022 Purchase Records", f"{total_records:,}")
+overview_dates.metric("Active Date Range", "2022-01-01 to 2022-12-31")
+overview_weeks.metric("Weekly Batches", len(behavioral))
 
 st.divider()
-
-
-# ============================================================
-# OVERVIEW
-# ============================================================
-
-st.header(
-    f"Batch Overview — {selected_month}"
-)
-
-
+st.header("IMPLEMENTATION 1 — Data Health Profiling")
+st.caption("Is the current data batch technically healthy?")
+months = [item["month"] for item in monthly]
+selected_month = st.selectbox("Select Purchase Month", months, index=len(months) - 1)
+month_data = next(item for item in monthly if item["month"] == selected_month)
 c1, c2, c3, c4 = st.columns(4)
+c1.metric("Health Score", f"{month_data['health_score']}/100")
+c2.metric("Health Status", month_data["health_status"])
+c3.metric("Purchase Records", f"{month_data['total_records']:,}")
+c4.metric("Columns", month_data["total_columns"])
 
+monthly_trend = pd.DataFrame(
+    [{"Month": item["month"], "Health Score": item["health_score"], "Purchase Record Count": item["total_records"]} for item in monthly]
+).set_index("Month")
+health_chart, volume_chart = st.columns(2)
+with health_chart:
+    st.subheader("Monthly Data Health Score Trend")
+    st.line_chart(monthly_trend[["Health Score"]], height=300)
+with volume_chart:
+    st.subheader("Monthly Purchase Record Volume")
+    st.line_chart(monthly_trend[["Purchase Record Count"]], height=300)
 
-c1.metric(
-    "Health Score",
-    f"{selected_data['health_score']}/100"
-)
-
-
-c2.metric(
-    "Health Status",
-    selected_data["health_status"]
-)
-
-
-c3.metric(
-    "Records",
-    f"{selected_data['total_records']:,}"
-)
-
-
-c4.metric(
-    "Columns",
-    selected_data["total_columns"]
-)
-
-
-if selected_data["health_status"] == "Healthy":
-
-    st.success(
-        "This batch is classified as Healthy."
-    )
-
-elif selected_data["health_status"] == "Warning":
-
-    st.warning(
-        "This batch is classified as Warning."
-    )
-
-else:
-
-    st.error(
-        "This batch is classified as Critical."
-    )
-
-
-# ============================================================
-# FEATURE 1
-# DATA FINGERPRINT
-# ============================================================
-
-st.divider()
-
-st.header(
-    "1. Automated Data Fingerprinting"
-)
-
-
-f1, f2, f3 = st.columns(3)
-
-
-f1.metric(
-    "Missing %",
-    f"{selected_data['missing_percentage']:.2f}%"
-)
-
-
-f2.metric(
-    "Duplicate %",
-    f"{selected_data['duplicate_percentage']:.2f}%"
-)
-
-
-f3.metric(
-    "Growth Rate",
-    f"{selected_data['growth_rate']:.2f}%"
-)
-
-
-# ============================================================
-# MISSING VALUES
-# ============================================================
-
-st.subheader(
-    "Missing Values by Column"
-)
-
-
-missing_df = pd.DataFrame(
-    [
-        {
-            "Column": column,
-            "Missing Count":
-                selected_data[
-                    "missing_values_per_column"
-                ][column],
-            "Missing %":
-                percentage
-        }
-
-        for column, percentage
-        in selected_data[
-            "missing_percentage_per_column"
-        ].items()
-    ]
-)
-
-
+st.subheader("Missing Values by Amazon Field")
 st.dataframe(
-    missing_df,
+    pd.DataFrame(
+        [
+            {"Column": column, "Missing Count": month_data["missing_values_per_column"][column], "Missing %": value}
+            for column, value in month_data["missing_percentage_per_column"].items()
+        ]
+    ),
     use_container_width=True,
-    hide_index=True
+    hide_index=True,
+    column_config={"Missing %": st.column_config.NumberColumn(format="%.2f%%")},
 )
-
-
-st.bar_chart(
-    missing_df.set_index(
-        "Column"
-    )["Missing %"]
-)
-
-
-# ============================================================
-# NUMERICAL SUMMARY
-# ============================================================
-
-st.subheader(
-    "Numerical Summary"
-)
-
-
-numerical_rows = []
-
-
-for column, stats in selected_data[
-    "numerical_statistics"
-].items():
-
-    numerical_rows.append(
-        {
-            "Column":
-                column,
-
-            "Count":
-                stats["count"],
-
-            "Mean":
-                stats["mean"],
-
-            "Std Dev":
-                stats["stddev"],
-
-            "Minimum":
-                stats["min"],
-
-            "Maximum":
-                stats["max"]
-        }
-    )
-
-
-numerical_df = pd.DataFrame(
-    numerical_rows
-)
-
-
+st.subheader("Numerical Summary")
 st.dataframe(
-    numerical_df,
-    use_container_width=True,
-    hide_index=True
-)
-
-
-# ============================================================
-# FEATURE 2
-# HISTORICAL COMPARISON
-# ============================================================
-
-st.divider()
-
-st.header(
-    "2. Historical Fingerprint Comparison"
-)
-
-
-history_df = pd.DataFrame(
-    [
-        {
-            "Month":
-                item["month"],
-
-            "Records":
-                item["total_records"],
-
-            "Growth %":
-                item["growth_rate"],
-
-            "Missing %":
-                item["missing_percentage"],
-
-            "Duplicate %":
-                item["duplicate_percentage"],
-
-            "Health Score":
-                item["health_score"]
-        }
-
-        for item in fingerprints
-    ]
-)
-
-
-st.subheader(
-    "Monthly Record Count"
-)
-
-
-st.line_chart(
-    history_df.set_index(
-        "Month"
-    )[["Records"]]
-)
-
-
-st.subheader(
-    "Health Score Trend"
-)
-
-
-st.line_chart(
-    history_df.set_index(
-        "Month"
-    )[["Health Score"]]
-)
-
-
-with st.expander(
-    "View Historical Fingerprint Table"
-):
-
-    st.dataframe(
-        history_df,
-        use_container_width=True,
-        hide_index=True
-    )
-
-
-# ============================================================
-# FEATURE 3
-# DATA QUALITY ANOMALY DETECTION
-# ============================================================
-
-st.divider()
-
-st.header(
-    "3. Data Quality Anomaly Detection"
-)
-
-
-anomalies = selected_data[
-    "data_quality_anomalies"
-]
-
-
-if anomalies:
-
-    for anomaly in anomalies:
-
-        st.warning(
-            anomaly
-        )
-
-else:
-
-    st.success(
-        "No configured data-quality anomalies detected."
-    )
-
-
-st.caption(
-    "Thresholds are configurable prototype monitoring rules "
-    "and are not universal industry standards."
-)
-
-
-# ============================================================
-# FEATURE 4
-# IQR OUTLIER DETECTION
-# ============================================================
-
-st.divider()
-
-st.header(
-    "4. IQR-Based Outlier Detection"
-)
-
-
-outlier_rows = []
-
-
-for column, values in selected_data[
-    "outlier_analysis"
-].items():
-
-    outlier_rows.append(
-        {
-            "Column":
-                column,
-
-            "Q1":
-                values["q1"],
-
-            "Q3":
-                values["q3"],
-
-            "IQR":
-                values["iqr"],
-
-            "Lower Bound":
-                values["lower_bound"],
-
-            "Upper Bound":
-                values["upper_bound"],
-
-            "Outlier Count":
-                values["outlier_count"],
-
-            "Outlier %":
-                values["outlier_percentage"]
-        }
-    )
-
-
-outlier_df = pd.DataFrame(
-    outlier_rows
-)
-
-
-st.dataframe(
-    outlier_df,
-    use_container_width=True,
-    hide_index=True
-)
-
-
-st.latex(
-    r"IQR = Q_3 - Q_1"
-)
-
-st.latex(
-    r"Lower\ Bound = Q_1 - 1.5(IQR)"
-)
-
-st.latex(
-    r"Upper\ Bound = Q_3 + 1.5(IQR)"
-)
-
-
-# ============================================================
-# FEATURE 5
-# SCHEMA DRIFT
-# ============================================================
-
-st.divider()
-
-st.header(
-    "5. Schema Drift Detection"
-)
-
-
-schema_drift = selected_data[
-    "schema_drift"
-]
-
-
-if schema_drift.get(
-    "baseline",
-    False
-):
-
-    st.info(
-        "This is the first historical batch and is used "
-        "as the baseline schema."
-    )
-
-
-elif schema_drift[
-    "detected"
-]:
-
-    st.error(
-        "Schema drift detected."
-    )
-
-
-    if schema_drift[
-        "added_columns"
-    ]:
-
-        st.write(
-            "Added Columns:",
-            schema_drift[
-                "added_columns"
-            ]
-        )
-
-
-    if schema_drift[
-        "removed_columns"
-    ]:
-
-        st.write(
-            "Removed Columns:",
-            schema_drift[
-                "removed_columns"
-            ]
-        )
-
-
-    if schema_drift[
-        "changed_data_types"
-    ]:
-
-        st.write(
-            "Changed Data Types:",
-            schema_drift[
-                "changed_data_types"
-            ]
-        )
-
-
-else:
-
-    st.success(
-        "No schema drift detected for this historical batch."
-    )
-
-
-with st.expander(
-    "View Current Schema"
-):
-
-    schema_df = pd.DataFrame(
+    pd.DataFrame(
         [
             {
-                "Column":
-                    column,
-
-                "Data Type":
-                    datatype
+                "Field": field,
+                "Count": values["count"],
+                "Mean": values["mean"],
+                "Std Dev": values["stddev"],
+                "Minimum": values["min"],
+                "Maximum": values["max"],
             }
-
-            for column, datatype
-            in selected_data[
-                "schema"
-            ].items()
+            for field, values in month_data["numerical_statistics"].items()
         ]
-    )
-
-
+    ),
+    use_container_width=True,
+    hide_index=True,
+)
+with st.expander("View IQR Outlier Analysis and Schema Monitoring"):
     st.dataframe(
-        schema_df,
+        pd.DataFrame(
+            [
+                {"Field": field, "Q1": values["q1"], "Q3": values["q3"], "Outlier %": values["outlier_percentage"]}
+                for field, values in month_data["outlier_analysis"].items()
+            ]
+        ),
         use_container_width=True,
-        hide_index=True
+        hide_index=True,
     )
-
-
-st.caption(
-    "The source dataset uses a largely stable historical schema. "
-    "A separate incoming-batch validation demo can be used "
-    "to demonstrate schema-drift handling."
-)
-
-
-# ============================================================
-# FEATURE 6
-# HEALTH SCORE
-# ============================================================
+    st.write("No schema drift detected." if not month_data["schema_drift"]["detected"] else "Schema drift detected.")
+    st.write("Configured anomalies:", month_data["data_quality_anomalies"] or "None")
 
 st.divider()
-
-st.header(
-    "6. Data Health Score & Severity"
+st.header("IMPLEMENTATION 2 — Behavioral Drift Intelligence")
+st.caption("Is the data behaving normally?")
+weeks = [item["week"] for item in behavioral]
+default_week = "2022-07-11" if "2022-07-11" in weeks else weeks[-1]
+selected_week = st.selectbox("Select Weekly Purchase Batch", weeks, index=weeks.index(default_week))
+week_data = next(item for item in behavioral if item["week"] == selected_week)
+b1, b2, b3, b4 = st.columns(4)
+b1.metric("Selected Week", week_data["week"])
+b2.metric(
+    "Behavioral Similarity Score",
+    f"{week_data['behavioral_similarity_score']}/100" if week_data["behavioral_similarity_score"] is not None else "N/A",
 )
+b3.metric("Drift Status", week_data["drift_status"])
+b4.metric("Valid Scored Features", week_data["similarity_scored_feature_count"])
 
-
-h1, h2, h3 = st.columns(3)
-
-
-h1.metric(
-    "Health Score",
-    f"{selected_data['health_score']}/100"
-)
-
-
-h2.metric(
-    "Health Status",
-    selected_data["health_status"]
-)
-
-
-h3.metric(
-    "Severity",
-    selected_data["severity"]
-)
-
-
-with st.expander(
-    "View Health Score Deductions"
-):
-
-    deductions = selected_data[
-        "deductions"
-    ]
-
-
-    if deductions:
-
-        st.write(
-            "**Starting Score: 100**"
-        )
-
-
-        for deduction in deductions:
-
-            st.write(
-                f"• {deduction}"
-            )
-
-
-        st.write(
-            f"**Final Score: "
-            f"{selected_data['health_score']}/100**"
-        )
-
-    else:
-
-        st.success(
-            "No deductions applied."
-        )
-
-
-# ============================================================
-# NEAR-REAL-TIME BATCH MONITORING
-# ============================================================
-
-st.divider()
-
-st.header(
-    "Near-Real-Time Batch Monitoring"
-)
-
-
-st.code(
-"""
-New Data Batch Arrives
-        |
-        v
-PySpark Loads the Batch
-        |
-        v
-Generate Data Fingerprint
-        |
-        v
-Compare with Historical Baseline
-        |
-        v
-Detect Missing / Duplicate / Growth Issues
-        |
-        v
-Perform IQR Outlier Analysis
-        |
-        v
-Validate Schema
-        |
-        v
-Calculate Data Health Score
-        |
-        v
-Update Dashboard
-"""
-)
-
-
-st.write(
-    """
-The current implementation is batch-based.
-When a new transaction batch becomes available,
-the same PySpark pipeline can profile it,
-compare it with historical fingerprints,
-calculate the updated health score,
-and display the new result in Streamlit.
-"""
-)
-
-
-# ============================================================
-# SOURCE
-# ============================================================
-
-st.divider()
-
-st.subheader(
-    "Dataset Source"
-)
-
-
-st.write(
-    "Online Retail II — "
-    "UCI Machine Learning Repository"
-)
-
-
-st.write(
-    "Chen, D. (2012). "
-    "Online Retail II [Dataset]. "
-    "UCI Machine Learning Repository."
-)
-
-
-st.write(
-    "DOI: 10.24432/C5CG6D"
-)
-
-
-# ============================================================
-# IMPLEMENTATION 2
-# BEHAVIORAL DRIFT INTELLIGENCE
-# ============================================================
-
-st.divider()
-
-st.header(
-    "Implementation 2 — Behavioral Drift Intelligence"
-)
-
-
-st.write(
-    "Weekly PySpark fingerprints compare customer, product, transaction, "
-    "pricing, quantity, cancellation, and data-quality behaviour with "
-    "earlier weekly batches."
-)
-
-
-if not behavioral_fingerprints:
-
-    st.info(
-        "Behavioral fingerprints have not been generated yet. "
-        "Run src/behavioral_drift.py to populate this section."
-    )
-
+if week_data["drift_status"] in {"Baseline Building", "Insufficient History"}:
+    st.info("Behavioral Similarity Score: N/A. Drift Status: Baseline Building. Four earlier weekly batches and valid feature statistics are required before scoring.")
+elif week_data["drift_status"] == "Normal":
+    show_severity("Weekly purchase behaviour is consistent with the prior-only historical baseline.", "INFO / NORMAL")
+elif week_data["drift_status"] == "Moderate Drift":
+    show_severity("Weekly purchase behaviour shows moderate drift from the prior-only historical baseline.", "WARNING")
 else:
+    show_severity("Weekly purchase behaviour shows major drift from the prior-only historical baseline.", "HIGH")
+if week_data["source_window_note"]:
+    st.caption(week_data["source_window_note"])
+if week_data["excluded_from_similarity_features"]:
+    st.caption(week_data["excluded_from_similarity_features"][0]["reason"])
 
-    behavioral_weeks = [
-        item["week"]
-        for item in behavioral_fingerprints
-    ]
-
-    selected_behavioral_week = st.selectbox(
-        "Select Weekly Batch",
-        behavioral_weeks,
-        index=len(behavioral_weeks) - 1,
-        key="behavioral_week_selector"
-    )
-
-    selected_behavioral_data = next(
-        item
-        for item in behavioral_fingerprints
-        if item["week"] == selected_behavioral_week
-    )
-
-    b1, b2, b3 = st.columns(3)
-
-    b1.metric(
-        "Selected Week",
-        selected_behavioral_data["week"]
-    )
-
-    b2.metric(
-        "Behavioral Similarity Score",
-        f"{selected_behavioral_data['behavioral_similarity_score']}/100"
-    )
-
-    b3.metric(
-        "Drift Status",
-        selected_behavioral_data["drift_status"]
-    )
-
-    if not selected_behavioral_data["baseline_ready"]:
-
-        st.info(
-            "This early weekly batch is accumulating historical context. "
-            "A statistical baseline begins after four prior weeks."
-        )
-
-    elif selected_behavioral_data["drift_status"] == "Normal":
-
-        st.success(
-            "The current weekly behaviour is consistent with its historical baseline."
-        )
-
-    elif selected_behavioral_data["drift_status"] == "Moderate Drift":
-
-        st.warning(
-            "The current weekly behaviour differs moderately from its historical baseline."
-        )
-
-    else:
-
-        st.error(
-            "The current weekly behaviour differs substantially from its historical baseline."
-        )
-
-    st.subheader(
-        "Top Deviating Features"
-    )
-
-    top_features = selected_behavioral_data["top_deviating_features"]
-
-    if top_features:
-
-        top_features_df = pd.DataFrame(
+st.subheader("Top Deviating Features")
+if week_data["top_deviating_features"]:
+    st.dataframe(
+        pd.DataFrame(
             [
                 {
-                    "Feature": item["feature"].replace("_", " ").title(),
-                    "Deviation (z-score)": round(item["z_score"], 2),
+                    "Feature": FEATURE_LABELS[item["feature"]],
+                    "Deviation (z-score)": item["z_score"],
                     "Current Batch": item["current"],
-                    "Historical Mean": item["baseline_mean"]
+                    "Historical Mean": item["baseline_mean"],
                 }
-                for item in top_features
+                for item in week_data["top_deviating_features"]
             ]
-        )
-
-        st.dataframe(
-            top_features_df,
-            use_container_width=True,
-            hide_index=True
-        )
-
-    else:
-
-        st.write(
-            "No deviations are ranked until the historical baseline is ready."
-        )
-
-    st.subheader(
-        "Historical Behavioral Trend"
-    )
-
-    behavioral_history_df = pd.DataFrame(
-        [
-            {
-                "Week": item["week"],
-                "Behavioral Similarity Score": item["behavioral_similarity_score"]
-            }
-            for item in behavioral_fingerprints
-        ]
-    )
-
-    st.line_chart(
-        behavioral_history_df.set_index("Week")[["Behavioral Similarity Score"]]
-    )
-
-    st.subheader(
-        "Current Batch vs Historical Baseline"
-    )
-
-    comparison_rows = []
-
-    for feature, comparison in selected_behavioral_data[
-        "feature_comparison"
-    ].items():
-
-        current_value = comparison["current"]
-        baseline_value = comparison["baseline_mean"]
-
-        comparison_rows.append(
-            {
-                "Feature": feature.replace("_", " ").title(),
-                "Current Batch": current_value,
-                "Historical Mean": baseline_value,
-                "Difference": (
-                    current_value - baseline_value
-                    if baseline_value is not None
-                    else None
-                ),
-                "Deviation (z-score)": comparison["z_score"]
-            }
-        )
-
-    comparison_df = pd.DataFrame(comparison_rows)
-
-    st.dataframe(
-        comparison_df,
+        ),
         use_container_width=True,
-        hide_index=True
+        hide_index=True,
+        column_config={"Deviation (z-score)": st.column_config.NumberColumn(format="%.2f")},
     )
+else:
+    st.write("No deviations are ranked while the historical baseline is building.")
 
-    st.caption(
-        "The baseline for each week uses only earlier weekly fingerprints. "
-        "Similarity is calculated from the capped mean absolute z-score "
-        "across all behavioural features."
+st.subheader("Current Batch vs Historical Baseline")
+comparison_rows = [
+    {
+        "Feature": FEATURE_LABELS[key],
+        "Current Batch": value["current"],
+        "Historical Mean": value["baseline_mean"],
+        "Historical Std Dev": value["baseline_stddev"],
+        "Deviation (z-score)": value["z_score"],
+    }
+    for key, value in week_data["feature_comparison"].items()
+]
+st.dataframe(
+    pd.DataFrame(comparison_rows),
+    use_container_width=True,
+    hide_index=True,
+    height=420,
+    column_config={
+        "Current Batch": st.column_config.NumberColumn(format="%.2f"),
+        "Historical Mean": st.column_config.NumberColumn(format="%.2f"),
+        "Historical Std Dev": st.column_config.NumberColumn(format="%.2f"),
+        "Deviation (z-score)": st.column_config.NumberColumn(format="%.2f"),
+    },
+)
+st.subheader("Historical Behavioral Trend")
+trend = pd.DataFrame(
+    [{"Week": item["week"], "Behavioral Similarity Score": item["behavioral_similarity_score"]} for item in behavioral]
+).set_index("Week")
+st.line_chart(trend[["Behavioral Similarity Score"]], height=320)
+st.caption("Prototype thresholds: ≥80 Normal, 55–79.99 Moderate Drift, and <55 Major Drift. These are configurable monitoring rules, not universal standards.")
+
+st.divider()
+st.header("FINAL MONITORING LAYER — Automated Data Pipeline Monitoring & Alerts")
+st.caption("Should the system raise an alert? Batch-triggered / near-real-time architecture; not true streaming.")
+
+# This view follows the selected behavioural week, so all displayed monitoring
+# indicators and any applicable alerts refer to the same real batch.
+monitoring_week = week_data
+monitoring_month = monitoring_week["week"][:7]
+applicable = [
+    alert
+    for alert in alerts
+    if alert["batch"] == monitoring_week["week"]
+    or (alert["alert_type"] == "Data Health" and alert["batch"] == monitoring_month)
+]
+highest = max(applicable, key=lambda alert: SEVERITY_RANK[alert["severity"]]) if applicable else None
+status = highest["severity"] if highest else "INFO / NORMAL"
+a1, a2, a3, a4 = st.columns(4)
+a1.metric("Overall Pipeline Status", status)
+a2.metric("Current Batch / Week", monitoring_week["week"])
+a3.metric(
+    "Behavioral Similarity Score",
+    f"{monitoring_week['behavioral_similarity_score']}/100"
+    if monitoring_week["behavioral_similarity_score"] is not None
+    else "N/A",
+)
+a4.metric("Alert Severity", highest["severity"] if highest else "INFO / NORMAL")
+
+if highest is None:
+    show_severity("No applicable warning, high, or critical alert exists for this selected period.", "INFO / NORMAL")
+else:
+    show_severity(highest["trigger"], highest["severity"])
+
+st.subheader("Alert History")
+if alerts:
+    alert_rows = [
+        {
+            "Alert ID": alert["alert_id"],
+            "Batch": alert["batch"],
+            "Type": alert["alert_type"],
+            "Severity": alert["severity"],
+            "Similarity": alert["similarity_score"],
+            "Top Trigger / Short Reason": short_reason(alert["trigger"]),
+            "Generated": alert.get("generated_timestamp"),
+        }
+        for alert in reversed(alerts)
+    ]
+    st.dataframe(
+        pd.DataFrame(alert_rows),
+        use_container_width=True,
+        hide_index=True,
+        height=300,
+        column_config={"Similarity": st.column_config.NumberColumn(format="%.2f")},
     )
+    with st.expander("View full alert reasons and details"):
+        for alert in reversed(alerts):
+            st.markdown(f"**{alert['alert_id']}** — {alert['severity']} — {alert['batch']}")
+            st.write(alert["trigger"])
+            if alert.get("top_deviating_features"):
+                feature_names = [
+                    FEATURE_LABELS.get(feature["feature"], feature["feature"])
+                    for feature in alert["top_deviating_features"]
+                ]
+                st.caption("Top deviations: " + ", ".join(feature_names))
+else:
+    st.success("No alerts have been generated.")
+
+st.divider()
+st.subheader("Dataset Source and Transparency")
+st.write("Open e-commerce 1.0 — Amazon Purchases public dataset. The active final analysis uses genuine 2022 purchase records only.")
+st.write("Survey ResponseID is analysed only as survey-response diversity, not as a verified customer identifier. No cancellation rate is claimed because the source has no confirmed cancellation field.")

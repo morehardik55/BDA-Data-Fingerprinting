@@ -1,0 +1,258 @@
+[
+    {
+        "alert_id": "behavioral-2022-03-14",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-03-14",
+        "batch_timestamp": "2022-03-14",
+        "severity": "WARNING",
+        "similarity_score": 68.76,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 68.76/100. Top deviations: quantity stddev, average quantity, duplicate rate.",
+        "top_deviating_features": [
+            {
+                "feature": "quantity_stddev",
+                "z_score": 18.719636942086115,
+                "current": 3.7204782478691873,
+                "baseline_mean": 0.5260002482571702
+            },
+            {
+                "feature": "average_quantity",
+                "z_score": 4.736452116678223,
+                "current": 1.1272922124315312,
+                "baseline_mean": 1.086441366665366
+            },
+            {
+                "feature": "duplicate_rate",
+                "z_score": 2.4900351571133754,
+                "current": 0.30959752321981426,
+                "baseline_mean": 0.6102683803792205
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-06-20",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-06-20",
+        "batch_timestamp": "2022-06-20",
+        "severity": "WARNING",
+        "similarity_score": 79.76,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 79.76/100. Top deviations: average purchase price per unit, unique shipping state count, purchase price per unit stddev.",
+        "top_deviating_features": [
+            {
+                "feature": "average_purchase_price_per_unit",
+                "z_score": 2.955093830600651,
+                "current": 24.6867896678962,
+                "baseline_mean": 22.429488519214555
+            },
+            {
+                "feature": "unique_shipping_state_count",
+                "z_score": 2.9463580300136125,
+                "current": 49.0,
+                "baseline_mean": 50.84
+            },
+            {
+                "feature": "purchase_price_per_unit_stddev",
+                "z_score": 1.895081493758275,
+                "current": 65.12063572079613,
+                "baseline_mean": 45.998134904661946
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-07-11",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-07-11",
+        "batch_timestamp": "2022-07-11",
+        "severity": "HIGH",
+        "similarity_score": 53.45,
+        "drift_status": "Major Drift",
+        "trigger": "Major Drift: behavioural similarity is 53.45/100. Top deviations: average purchase price per unit, purchase record count, unique product code count.",
+        "top_deviating_features": [
+            {
+                "feature": "average_purchase_price_per_unit",
+                "z_score": 9.926637895122001,
+                "current": 31.181379663494535,
+                "baseline_mean": 22.57340328387434
+            },
+            {
+                "feature": "purchase_record_count",
+                "z_score": 4.978844228416516,
+                "current": 13670.0,
+                "baseline_mean": 8076.785714285715
+            },
+            {
+                "feature": "unique_product_code_count",
+                "z_score": 4.395009838905011,
+                "current": 12212.0,
+                "baseline_mean": 7603.964285714285
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-10-10",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-10-10",
+        "batch_timestamp": "2022-10-10",
+        "severity": "WARNING",
+        "similarity_score": 73.88,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 73.88/100. Top deviations: missing value rate, average purchase price per unit, duplicate rate.",
+        "top_deviating_features": [
+            {
+                "feature": "missing_value_rate",
+                "z_score": 2.7693698760209684,
+                "current": 0.654296875,
+                "baseline_mean": 0.9752234949408964
+            },
+            {
+                "feature": "average_purchase_price_per_unit",
+                "z_score": 1.8326527918071502,
+                "current": 25.549106445311658,
+                "baseline_mean": 22.6074910706899
+            },
+            {
+                "feature": "duplicate_rate",
+                "z_score": 1.7885127080761134,
+                "current": 0.283203125,
+                "baseline_mean": 0.5233984387830355
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-11-21",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-11-21",
+        "batch_timestamp": "2022-11-21",
+        "severity": "WARNING",
+        "similarity_score": 74.68,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 74.68/100. Top deviations: average purchase price per unit, unique product code count, purchase record count.",
+        "top_deviating_features": [
+            {
+                "feature": "average_purchase_price_per_unit",
+                "z_score": 2.7033772938758607,
+                "current": 26.898556261341653,
+                "baseline_mean": 22.650711148406963
+            },
+            {
+                "feature": "unique_product_code_count",
+                "z_score": 2.2409232723292027,
+                "current": 10351.0,
+                "baseline_mean": 7881.404255319149
+            },
+            {
+                "feature": "purchase_record_count",
+                "z_score": 2.1233637455900634,
+                "current": 11020.0,
+                "baseline_mean": 8384.553191489362
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-12-05",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-12-05",
+        "batch_timestamp": "2022-12-05",
+        "severity": "WARNING",
+        "similarity_score": 78.81,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 78.81/100. Top deviations: duplicate rate, survey response diversity, quantity stddev.",
+        "top_deviating_features": [
+            {
+                "feature": "duplicate_rate",
+                "z_score": 3.323849910324044,
+                "current": 1.0031494226058555,
+                "baseline_mean": 0.5247474267840686
+            },
+            {
+                "feature": "survey_response_diversity",
+                "z_score": 1.7932372253147617,
+                "current": 1777.0,
+                "baseline_mean": 2108.285714285714
+            },
+            {
+                "feature": "quantity_stddev",
+                "z_score": 1.786161063808173,
+                "current": 1.4955885934292763,
+                "baseline_mean": 0.6256551265381691
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-12-19",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-12-19",
+        "batch_timestamp": "2022-12-19",
+        "severity": "WARNING",
+        "similarity_score": 74.63,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 74.63/100. Top deviations: survey response diversity, unique product code count, purchase record count.",
+        "top_deviating_features": [
+            {
+                "feature": "survey_response_diversity",
+                "z_score": 3.2735010774819977,
+                "current": 1472.0,
+                "baseline_mean": 2096.3137254901962
+            },
+            {
+                "feature": "unique_product_code_count",
+                "z_score": 2.4093396997533887,
+                "current": 5260.0,
+                "baseline_mean": 7970.254901960784
+            },
+            {
+                "feature": "purchase_record_count",
+                "z_score": 2.2919438843743336,
+                "current": 5594.0,
+                "baseline_mean": 8473.450980392157
+            }
+        ],
+        "source_window_note": null,
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    },
+    {
+        "alert_id": "behavioral-2022-12-26",
+        "alert_type": "Behavioral Drift",
+        "batch": "2022-12-26",
+        "batch_timestamp": "2022-12-26",
+        "severity": "WARNING",
+        "similarity_score": 70.25,
+        "drift_status": "Moderate Drift",
+        "trigger": "Moderate Drift: behavioural similarity is 70.25/100. Top deviations: survey response diversity, unique product code count, unique category count. Partial source window: genuine 2022 data ends on 2022-12-31 before this calendar week is complete. Transaction volume is excluded from behavioural similarity scoring for this source-truncated week.",
+        "top_deviating_features": [
+            {
+                "feature": "survey_response_diversity",
+                "z_score": 3.9150466739426153,
+                "current": 1271.0,
+                "baseline_mean": 2084.3076923076924
+            },
+            {
+                "feature": "unique_product_code_count",
+                "z_score": 3.070256437108093,
+                "current": 4309.0,
+                "baseline_mean": 7918.134615384615
+            },
+            {
+                "feature": "unique_category_count",
+                "z_score": 2.6864527074804587,
+                "current": 862.0,
+                "baseline_mean": 1049.326923076923
+            }
+        ],
+        "source_window_note": "Partial source window: genuine 2022 data ends on 2022-12-31 before this calendar week is complete.",
+        "generated_timestamp": "2026-09-07T16:34:50.063372+00:00"
+    }
+]
