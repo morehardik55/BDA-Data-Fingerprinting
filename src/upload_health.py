@@ -6,7 +6,7 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from tempfile import NamedTemporaryFile, gettempdir
+from tempfile import NamedTemporaryFile
 from typing import Iterable
 
 import jdk
@@ -32,7 +32,9 @@ def _configure_java_for_spark() -> None:
     """Ensure Spark receives a full Java 17 kit, including vector modules."""
     java_home = Path(os.environ.get("JAVA_HOME", ""))
     if not (java_home / "jmods" / "jdk.incubator.vector.jmod").is_file():
-        java_home = Path(jdk.install("17", path=str(Path(gettempdir()) / "bda-java")))
+        # Streamlit Cloud shares /tmp across processes; use the app user's
+        # private home directory so Java can create its runtime cache safely.
+        java_home = Path(jdk.install("17", path=str(Path.home() / ".bda-java")))
     os.environ["JAVA_HOME"] = str(java_home)
     os.environ["PYSPARK_PYTHON"] = sys.executable
     os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
