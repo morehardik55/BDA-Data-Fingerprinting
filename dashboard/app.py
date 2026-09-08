@@ -1,5 +1,6 @@
 import json
 import sys
+from hashlib import sha256
 from pathlib import Path
 
 import pandas as pd
@@ -12,6 +13,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 from src.upload_health import analyze_uploaded_csv, create_spark_session
+from src.mongo_store import load_recent_reports, save_report
 
 st.set_page_config(page_title="Intelligent Big Data Monitoring", page_icon="📊", layout="wide")
 
@@ -58,6 +60,19 @@ def short_reason(reason, limit=105):
     return reason if len(reason) <= limit else f"{reason[:limit - 1].rstrip()}…"
 
 
+def get_mongodb_settings():
+    """Read MongoDB configuration from Streamlit secrets without exposing it."""
+    try:
+        uri = st.secrets["MONGODB_URI"]
+    except (KeyError, FileNotFoundError):
+        return None
+    return {
+        "uri": uri,
+        "database": st.secrets.get("MONGODB_DATABASE", "bda_monitoring"),
+        "collection": st.secrets.get("MONGODB_COLLECTION", "dataset_health_reports"),
+    }
+
+
 @st.cache_resource
 def get_spark_session():
     return create_spark_session()
@@ -66,6 +81,7 @@ def get_spark_session():
 monthly = load_json(str(MONTHLY_FILE))
 behavioral = load_json(str(BEHAVIORAL_FILE))
 alerts = load_json(str(ALERT_FILE)) if ALERT_FILE.exists() else []
+mongodb_settings = get_mongodb_settings()
 
 st.sidebar.title("Data Health Monitor")
 st.sidebar.subheader("Active Dataset")
@@ -74,7 +90,7 @@ st.sidebar.caption("Genuine 2022 purchase records only")
 st.sidebar.divider()
 st.sidebar.write("Apache Spark / PySpark")
 st.sidebar.write("Parquet")
-st.sidebar.write("MongoDB Atlas / NoSQL (planned)")
+st.sidebar.write("MongoDB Atlas / NoSQL")
 st.sidebar.write("Streamlit")
 
 st.title("Intelligent Big Data Quality & Behavioral Drift Monitoring System using PySpark")
@@ -179,6 +195,23 @@ else:
                 """
             )
             st.caption("These are prototype configurable health thresholds, not universal standards.")
+
+        if mongodb_settings:
+            report_key = sha256(uploaded_file.getvalue()).hexdigest()
+            if st.button("Save this report to MongoDB Atlas", key=f"save_mongo_{report_key}"):
+                try:
+                    with st.spinner("Saving report to MongoDB Atlas..."):
+                        save_report(
+                            mongodb_settings["uri"],
+                            mongodb_settings["database"],
+                            mongodb_settings["collection"],
+                            analysis,
+                        )
+                    st.success("Report saved to MongoDB Atlas.")
+                except Exception:
+                    st.error("MongoDB could not save this report. Check the Atlas URI, database user, and network access.")
+        else:
+            st.caption("MongoDB storage is available after MONGODB_URI is added to Streamlit secrets.")
 
 total_records = sum(item["total_records"] for item in monthly)
 overview_records, overview_dates, overview_weeks = st.columns([1.15, 1.75, 1.1])
@@ -335,16 +368,26 @@ st.caption("Prototype thresholds: ≥80 Normal, 55–79.99 Moderate Drift, and <
 
 st.divider()
 st.header("IMPLEMENTATION 3 — MongoDB Atlas / NoSQL Report History")
-st.caption("Planned persistence layer for retaining data-health reports and alert events.")
+st.caption("Document-based persistence for uploaded-dataset health reports and alert-event history.")
 m1, m2, m3 = st.columns(3)
 m1.metric("Storage Model", "Document / NoSQL")
-m2.metric("Planned Database", "MongoDB Atlas")
-m3.metric("Demo Status", "Not Connected")
-st.info(
-    "Architecture preview only: this deployment does not connect to MongoDB or store reports. "
-    "A future version can persist uploaded-dataset health results and generated alert history as JSON documents."
-)
-with st.expander("Planned MongoDB document contents"):
+m2.metric("Database", "MongoDB Atlas")
+m3.metric("Connection", "Configured" if mongodb_settings else "Not Configured")
+if mongodb_settings:
+    try:
+        recent_reports = load_recent_reports(
+            mongodb_settings["uri"], mongodb_settings["database"], mongodb_settings["collection"]
+        )
+        st.success("MongoDB Atlas is configured. Save an uploaded report to add it to this history.")
+        if recent_reports:
+            st.dataframe(pd.DataFrame(recent_reports), use_container_width=True, hide_index=True)
+        else:
+            st.info("No uploaded-dataset reports have been saved yet.")
+    except Exception:
+        st.error("MongoDB is configured but could not be reached. Check the Atlas URI, database user, and network access.")
+else:
+    st.info("Add MONGODB_URI to Streamlit secrets to enable persistent report history.")
+with st.expander("MongoDB document contents"):
     st.write(
         "Each report can store the upload file name, analysis timestamp, schema overview, "
         "data-health score, detected issues, and related alert metadata."

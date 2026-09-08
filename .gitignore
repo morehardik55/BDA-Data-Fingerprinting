@@ -2,6 +2,7 @@ venv/
 __pycache__/
 *.pyc
 .env
+.streamlit/secrets.toml
 
 data/*.xlsx
 data/*.parquet
