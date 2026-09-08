@@ -74,6 +74,7 @@ st.sidebar.caption("Genuine 2022 purchase records only")
 st.sidebar.divider()
 st.sidebar.write("Apache Spark / PySpark")
 st.sidebar.write("Parquet")
+st.sidebar.write("MongoDB Atlas / NoSQL (planned)")
 st.sidebar.write("Streamlit")
 
 st.title("Intelligent Big Data Quality & Behavioral Drift Monitoring System using PySpark")
@@ -331,6 +332,23 @@ trend = pd.DataFrame(
 ).set_index("Week")
 st.line_chart(trend[["Behavioral Similarity Score"]], height=320)
 st.caption("Prototype thresholds: ≥80 Normal, 55–79.99 Moderate Drift, and <55 Major Drift. These are configurable monitoring rules, not universal standards.")
+
+st.divider()
+st.header("IMPLEMENTATION 3 — MongoDB Atlas / NoSQL Report History")
+st.caption("Planned persistence layer for retaining data-health reports and alert events.")
+m1, m2, m3 = st.columns(3)
+m1.metric("Storage Model", "Document / NoSQL")
+m2.metric("Planned Database", "MongoDB Atlas")
+m3.metric("Demo Status", "Not Connected")
+st.info(
+    "Architecture preview only: this deployment does not connect to MongoDB or store reports. "
+    "A future version can persist uploaded-dataset health results and generated alert history as JSON documents."
+)
+with st.expander("Planned MongoDB document contents"):
+    st.write(
+        "Each report can store the upload file name, analysis timestamp, schema overview, "
+        "data-health score, detected issues, and related alert metadata."
+    )
 
 st.divider()
 st.header("FINAL MONITORING LAYER — Automated Data Pipeline Monitoring & Alerts")
