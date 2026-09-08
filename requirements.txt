@@ -1,5 +1,6 @@
 streamlit
 pandas
 pyspark==4.2.0
+jdk4py
 pyarrow
 openpyxl

@@ -2,10 +2,19 @@
 
 from __future__ import annotations
 
+import os
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Iterable
+
+# jdk4py supplies Java through pip on hosted environments where apt is unavailable.
+from jdk4py import JAVA_HOME
+
+os.environ.setdefault("JAVA_HOME", str(JAVA_HOME))
+os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
+os.environ.setdefault("PYSPARK_DRIVER_PYTHON", sys.executable)
 
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
