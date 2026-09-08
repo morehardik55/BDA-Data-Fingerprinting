@@ -1,14 +1,20 @@
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 
+# Streamlit Cloud executes this file from the dashboard directory.
+# Add the repository root so shared helpers in src/ are importable.
+BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 from src.upload_health import analyze_uploaded_csv, create_spark_session
 
 st.set_page_config(page_title="Intelligent Big Data Monitoring", page_icon="📊", layout="wide")
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 MONTHLY_FILE = BASE_DIR / "fingerprints" / "monthly_fingerprints.json"
 BEHAVIORAL_FILE = BASE_DIR / "fingerprints" / "behavioral_drift.json"
 ALERT_FILE = BASE_DIR / "fingerprints" / "alert_history.json"
