@@ -1,0 +1,6 @@
+.git
+.streamlit/secrets.toml
+venv
+__pycache__
+*.pyc
+data/amazon-purchases.csv
