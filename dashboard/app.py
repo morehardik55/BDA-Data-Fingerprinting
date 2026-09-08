@@ -92,8 +92,15 @@ if not uploaded_file:
     st.info("Upload a .csv file to see schema, missing values, duplicates, outliers, and a prototype data health score.")
 else:
     st.write(f"**File Name:** {uploaded_file.name}")
-    spark = get_spark_session()
-    analysis, error = analyze_uploaded_csv(spark, uploaded_file)
+    try:
+        spark = get_spark_session()
+        analysis, error = analyze_uploaded_csv(spark, uploaded_file)
+    except Exception:
+        analysis = None
+        error = (
+            "Unable to start PySpark for this upload. Please verify that the deployment "
+            "has a supported Java runtime and restart the app."
+        )
     if error:
         st.error(error)
     elif analysis is None:
