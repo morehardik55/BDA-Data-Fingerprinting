@@ -3,7 +3,8 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 \
-    PYSPARK_PYTHON=python
+    PYSPARK_PYTHON=python \
+    SPARK_LOCAL_IP=127.0.0.1
 
 WORKDIR /app
 
