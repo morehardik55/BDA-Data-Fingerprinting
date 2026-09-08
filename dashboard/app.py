@@ -1,4 +1,5 @@
 import json
+import logging
 import sys
 from hashlib import sha256
 from pathlib import Path
@@ -14,6 +15,8 @@ if str(BASE_DIR) not in sys.path:
 
 from src.upload_health import analyze_uploaded_csv, create_spark_session
 from src.mongo_store import load_recent_reports, save_report
+
+LOGGER = logging.getLogger(__name__)
 
 st.set_page_config(page_title="Intelligent Big Data Monitoring", page_icon="📊", layout="wide")
 
@@ -112,11 +115,12 @@ else:
     try:
         spark = get_spark_session()
         analysis, error = analyze_uploaded_csv(spark, uploaded_file)
-    except Exception:
+    except Exception as exc:
+        LOGGER.exception("PySpark startup failed for uploaded CSV analysis")
         analysis = None
         error = (
-            "Unable to start PySpark for this upload. Please verify that the deployment "
-            "has a supported Java runtime and restart the app."
+            "Unable to start PySpark for this upload. "
+            f"Details: {type(exc).__name__}: {exc}"
         )
     if error:
         st.error(error)
