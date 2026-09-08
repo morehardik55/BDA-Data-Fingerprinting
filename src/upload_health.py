@@ -50,10 +50,8 @@ def create_spark_session(existing_session: SparkSession | None = None) -> SparkS
         return existing_session
     return (
         SparkSession.builder.appName("UploadedDatasetHealthAnalyzer")
-        .master("local[2]")
+        .master("local[*]")
         .config("spark.ui.enabled", "false")
-        .config("spark.driver.host", "127.0.0.1")
-        .config("spark.driver.bindAddress", "127.0.0.1")
         .getOrCreate()
     )
 
