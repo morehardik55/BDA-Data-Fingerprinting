@@ -6,15 +6,10 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile, gettempdir
 from typing import Iterable
 
-# jdk4py supplies Java through pip on hosted environments where apt is unavailable.
-from jdk4py import JAVA_HOME
-
-os.environ.setdefault("JAVA_HOME", str(JAVA_HOME))
-os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
-os.environ.setdefault("PYSPARK_DRIVER_PYTHON", sys.executable)
+import jdk
 
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
@@ -31,6 +26,16 @@ from pyspark.sql.types import (
 
 NUMERIC_TYPES = (DoubleType, IntegerType, LongType, ShortType, FloatType)
 DATE_TYPES = (DateType, TimestampType)
+
+
+def _configure_java_for_spark() -> None:
+    """Ensure Spark receives a full Java 17 kit, including vector modules."""
+    java_home = Path(os.environ.get("JAVA_HOME", ""))
+    if not (java_home / "jmods" / "jdk.incubator.vector.jmod").is_file():
+        java_home = Path(jdk.install("17", path=str(Path(gettempdir()) / "bda-java")))
+    os.environ["JAVA_HOME"] = str(java_home)
+    os.environ["PYSPARK_PYTHON"] = sys.executable
+    os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
 
 
 @dataclass
@@ -57,6 +62,7 @@ class UploadHealthResult:
 def create_spark_session(existing_session: SparkSession | None = None) -> SparkSession:
     if existing_session is not None:
         return existing_session
+    _configure_java_for_spark()
     return (
         SparkSession.builder.appName("UploadedDatasetHealthAnalyzer")
         .master("local[*]")
