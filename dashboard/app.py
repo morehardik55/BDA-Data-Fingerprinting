@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -12,6 +13,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 from src.upload_health import analyze_uploaded_csv, create_spark_session
+from src.mongo_store import load_recent_health_reports, save_health_report
 
 st.set_page_config(page_title="Intelligent Big Data Monitoring", page_icon="📊", layout="wide")
 
@@ -63,9 +65,23 @@ def get_spark_session():
     return create_spark_session()
 
 
+def get_mongodb_settings():
+    """Read MongoDB configuration without exposing credentials in the UI."""
+    try:
+        mongo_uri = st.secrets.get("MONGODB_URI", os.getenv("MONGODB_URI", ""))
+        database_name = st.secrets.get("MONGODB_DATABASE", os.getenv("MONGODB_DATABASE", "bda_monitoring"))
+        collection_name = st.secrets.get("MONGODB_COLLECTION", os.getenv("MONGODB_COLLECTION", "dataset_health_reports"))
+    except Exception:
+        mongo_uri = os.getenv("MONGODB_URI", "")
+        database_name = os.getenv("MONGODB_DATABASE", "bda_monitoring")
+        collection_name = os.getenv("MONGODB_COLLECTION", "dataset_health_reports")
+    return mongo_uri.strip(), database_name.strip(), collection_name.strip()
+
+
 monthly = load_json(str(MONTHLY_FILE))
 behavioral = load_json(str(BEHAVIORAL_FILE))
 alerts = load_json(str(ALERT_FILE)) if ALERT_FILE.exists() else []
+MONGODB_URI, MONGODB_DATABASE, MONGODB_COLLECTION = get_mongodb_settings()
 
 st.sidebar.title("Data Health Monitor")
 st.sidebar.subheader("Active Dataset")
@@ -74,6 +90,7 @@ st.sidebar.caption("Genuine 2022 purchase records only")
 st.sidebar.divider()
 st.sidebar.write("Apache Spark / PySpark")
 st.sidebar.write("Parquet")
+st.sidebar.write("MongoDB Atlas / NoSQL")
 st.sidebar.write("Streamlit")
 
 st.title("Intelligent Big Data Quality & Behavioral Drift Monitoring System using PySpark")
@@ -87,6 +104,7 @@ st.divider()
 st.header("Analyze Your Dataset")
 st.caption("Upload your CSV file to perform an automated data health assessment.")
 uploaded_file = st.file_uploader("Upload CSV File", type=["csv"])
+latest_upload_analysis = None
 
 if not uploaded_file:
     st.info("Upload a .csv file to see schema, missing values, duplicates, outliers, and a prototype data health score.")
@@ -106,6 +124,7 @@ else:
     elif analysis is None:
         st.error("Unable to analyze the uploaded file.")
     else:
+        latest_upload_analysis = analysis
         st.write(f"**Rows:** {analysis.row_count:,}")
         st.write(f"**Columns:** {analysis.column_count}")
         left, middle, right, right2, right3, right4 = st.columns(6)
@@ -331,6 +350,47 @@ trend = pd.DataFrame(
 ).set_index("Week")
 st.line_chart(trend[["Behavioral Similarity Score"]], height=320)
 st.caption("Prototype thresholds: ≥80 Normal, 55–79.99 Moderate Drift, and <55 Major Drift. These are configurable monitoring rules, not universal standards.")
+
+st.divider()
+st.header("IMPLEMENTATION 3 — MongoDB Atlas NoSQL Report Persistence")
+st.caption("Persist uploaded-dataset health assessments as flexible JSON documents for historical tracking and auditability.")
+
+if not MONGODB_URI:
+    st.info("MongoDB Atlas is not configured. Add MONGODB_URI in Streamlit secrets to enable report persistence.")
+elif latest_upload_analysis is None:
+    st.info("Upload and analyze a CSV above, then return here to save its health assessment to MongoDB Atlas.")
+else:
+    mongo_database, mongo_collection, mongo_status = st.columns(3)
+    mongo_database.metric("MongoDB Database", MONGODB_DATABASE)
+    mongo_collection.metric("Report Collection", MONGODB_COLLECTION)
+    mongo_status.metric("Current Dataset Status", latest_upload_analysis.health_status)
+    if st.button("Save Current Upload Report to MongoDB", key="save_upload_health_report"):
+        report_id, mongo_error = save_health_report(
+            MONGODB_URI,
+            latest_upload_analysis,
+            MONGODB_DATABASE,
+            MONGODB_COLLECTION,
+        )
+        if mongo_error:
+            st.error(mongo_error)
+        else:
+            st.success(f"Saved report to MongoDB Atlas. Report ID: {report_id}")
+
+with st.expander("View MongoDB Atlas Report History"):
+    if not MONGODB_URI:
+        st.info("Configure MONGODB_URI in Streamlit secrets to load saved uploaded-dataset reports.")
+    elif st.button("Load Recent MongoDB Reports", key="load_mongodb_reports"):
+        reports, mongo_error = load_recent_health_reports(
+            MONGODB_URI,
+            MONGODB_DATABASE,
+            MONGODB_COLLECTION,
+        )
+        if mongo_error:
+            st.error(mongo_error)
+        elif reports:
+            st.dataframe(pd.DataFrame(reports), use_container_width=True, hide_index=True)
+        else:
+            st.info("No uploaded-dataset reports have been saved in MongoDB yet.")
 
 st.divider()
 st.header("FINAL MONITORING LAYER — Automated Data Pipeline Monitoring & Alerts")

@@ -3,3 +3,5 @@ pandas
 pyspark==4.2.0
 pyarrow
 openpyxl
+pymongo==4.18.0
+dnspython==2.8.0
