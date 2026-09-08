@@ -2,13 +2,13 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+    JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 \
     PYSPARK_PYTHON=python
 
 WORKDIR /app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends openjdk-17-jre-headless \
+    && apt-get install -y --no-install-recommends openjdk-21-jdk-headless \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
